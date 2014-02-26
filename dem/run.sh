@@ -58,6 +58,11 @@ dem_url=`ciop-publish $TMPDIR/dem.tgz`
 ciop-log "DEBUG" "DEM HDFS path: $dem_url"
 
 # create the input for the next job with references to both ASAR data and DEM reference
-echo "`cat $TMPDIR/input | tr '\n' ','`$dem_url"
+cat $TMPDIR/input | while read line
+do
+	echo "sar=$line"
+done
+
+echo "DEM=$dem_url"
 
 

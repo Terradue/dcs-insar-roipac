@@ -33,22 +33,38 @@ export PATH=${INT_BIN}:${INT_SCR}:${PATH}
 
 export SAR_ENV_ORB=/application/roipac/aux/asar/
 export VOR_DIR=/application/roipac/aux/vor/
+export INS_DIR=$SAR_ENV_ORB
 
+# test ampcor
+ulimit -s unlimited #20480
+
+export TMPDIR=/tmp
 cat > $TMPDIR/input
- 
+
 # retrieve all inputs, the two ASAR products and the DEM
 mkdir -p $TMPDIR/workdir/dem
 
-dem_url=`sed '3q;d' $TMPDIR/input`
-dem="`ciop-copy -o $TMPDIR/workdir/dem $dem_url`"
+dem_url=`cat $TMPDIR/input | grep DEM | cut -d "=" -f 2`
+ciop-log "DEBUG" "DEM URL: $dem_url"
+
+ciop-copy -o $TMPDIR/workdir/dem/ $dem_url
+
+dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
 
 roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
-for sar_url in `head -n 2 $TMPDIR/input
+for input in `cat $TMPDIR/input | grep sar` 
 do
+  sar_url=`echo $input | cut -d "=" -f 2`
+
   # get the date in format YYMMDD
   sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
+  sar_date_short=`echo $sar_date | cut -c 1-4`
+  ciop-log "INFO" "SAR date: $sar_date and $sar_date_short"
+
+  # get the dataset identifier
   sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
+  ciop-log "INFO" "SAR identifier: $sar_identifier"
 
   sar_folder=$TMPDIR/workdir/$sar_date 
   mkdir -p $sar_folder
@@ -57,21 +73,23 @@ do
   sar="`ciop-copy -o $sar_folder $sar_url`"
 
   cd $sar_folder
-  make_raw_envi.pl $sar_identifier DOR $sardate 1>&2 
+  ciop-log "DEBUG" "make_raw_envi.pl $sar_identifier DOR $sar_date"
+  make_raw_envi.pl $sar_identifier DOR $sar_date 1>&2 
 
   if [ ! -e "$roipac_proc" ]
   then 
-    echo "SarDir1=$sardate" > $roipac_proc 
-    intdir="int_$sardate"
-    geodir="geo_$sardate"
+    echo "SarDir1=$sar_date" > $roipac_proc 
+    intdir="int_$sar_date"
+    geodir="geo_$sar_date_short"
   else    
-    echo "SarDir2=$sardate" >> $roipac_proc
-    intdir=${intdir}_$sardate
-    geodir=${geodir}_$sardate"
+    echo "SarDir2=$sar_date" >> $roipac_proc
+    intdir=${intdir}_$sar_date
+    geodir=${geodir}-${sar_date_short}
+  fi
 done
 
 # generate ROI_PAC proc file
-echo >> $roipac_proc < EOF
+cat >> $roipac_proc << EOF
 IntDir=$intdir
 SimDir=sim_3asec
 # new sim for this track at 4rlks
@@ -103,9 +121,11 @@ cleanup=no
 #unw_method=snaphu_mcf
 #unw_method=icu
 unw_method=old
+
 EOF
 
 cp $roipac_proc /tmp
 cd $TMPDIR/workdir
-process_2pass.pl $roipac_proc
+
+process_2pass.pl $roipac_proc 1>&2
   
