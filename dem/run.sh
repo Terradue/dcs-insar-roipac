@@ -26,9 +26,29 @@ exit $retval
 }
 trap cleanExit EXIT
 
+export PATH=/application/dem/bin:$PATH 
+
 cat > $TMPDIR/input 
 
 # invoke the DEM generation WPS process
+wpsdem="`ciop-getparam dem_access_point`"
 
-dem_url=`ciop-publish $dem`
+wpsclient -e \
+          -u $wpsdem
+          -t 5000 \
+          -a \
+          -p com.terradue.wps_oozie.process.OozieAbstractAlgorithm \
+          -Iformat="roi_pac" \
+          -ILevel0_ref="`head -n 1 $TMPDIR/input`" \
+          -f $TMPDIR/result
+          
+# extract the result URL
+curl -O $TMPDIR/dem.tgz `cat $TMPDIR/result | xsltproc /application/dem/xslt/getresult.xsl -`
+
+# publish the dem archive
+dem_url=`ciop-publish $TMPDIR/dem.tgz`
+
+# create the input for the next job with references to both ASAR data and DEM reference
 ciop-publish -s "`cat $TMPDIR/input | tr '\n' ','`,$dem_url"
+
+
