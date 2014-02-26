@@ -28,27 +28,36 @@ trap cleanExit EXIT
 
 export PATH=/application/dem/bin:$PATH 
 
-cat > $TMPDIR/input 
+cat | grep rdf > $TMPDIR/input 
+cp $TMPDIR/input /tmp
+
+ciop-log "DEBUG" "input contains: `cat $TMPDIR/input`"
 
 # invoke the DEM generation WPS process
 wpsdem="`ciop-getparam dem_access_point`"
 
+set -x
+
 wpsclient -e \
-          -u $wpsdem
+          -u $wpsdem \
           -t 5000 \
           -a \
           -p com.terradue.wps_oozie.process.OozieAbstractAlgorithm \
           -Iformat="roi_pac" \
           -ILevel0_ref="`head -n 1 $TMPDIR/input`" \
-          -f $TMPDIR/result
+          -f $TMPDIR/result 1>&2
+
+cp $TMPDIR/result /tmp
           
 # extract the result URL
-curl -O $TMPDIR/dem.tgz `cat $TMPDIR/result | xsltproc /application/dem/xslt/getresult.xsl -`
+curl -L -s "`cat $TMPDIR/result | xsltproc /application/dem/xslt/getresult.xsl -`" | xsltproc /application/dem/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/dem.tgz 
 
 # publish the dem archive
 dem_url=`ciop-publish $TMPDIR/dem.tgz`
 
+ciop-log "DEBUG" "DEM HDFS path: $dem_url"
+
 # create the input for the next job with references to both ASAR data and DEM reference
-ciop-publish -s "`cat $TMPDIR/input | tr '\n' ','`,$dem_url"
+echo "`cat $TMPDIR/input | tr '\n' ','`$dem_url"
 
 
