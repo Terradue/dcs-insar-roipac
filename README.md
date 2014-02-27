@@ -1,7 +1,7 @@
 Running ROI_PAC on a Sandbox
 =
 
-Repeat Orbit Interferometry PACkage (ROI_PAC) is 
+Repeat Orbit Interferometry PACkage (ROI\_PAC) is a software package created by the Jet Propulsion Laboratory division of NASA and CalTech for processing SAR images to create InSAR images, named interferograms [Wikipedia](http://en.wikipedia.org/wiki/ROI_PAC)
 
 
 
