@@ -28,8 +28,18 @@ sudo yum install roi_pac
 Use `ciop-github` to clone the repository in the `application` volume:
 
 ```
-ciop-github clone -g 
+ciop-github clone -g https://github.com/Terradue/roi_pac.git
 ```
+
+Check the contents of `/application` with:
+
+```
+ls -la /application
+```
+
+All files from the repo have been cloned locally in /application.
+
+> Using `git clone https://github.com/Terradue/roi_pac.git /application` is not possible since the folder (in reality a filesystem) /application already exists and could contain files of folders
 
 ### Understanding the processing steps
 
