@@ -54,6 +54,9 @@ The application is described in the Application Descriptor file. For this applic
 
 #### Processing step `dem`
 
+This processing step relies on an external WPS service to generate DEMs using STRM v4.1 data for ROI_PAC or GAMMA.
+An instance of that appliance has to be triggered to process this step.
+
 ##### Inputs
 
 The processing step `dem` takes the two Envisat ASAR datasets references:
