@@ -44,7 +44,7 @@ ls -la /application
 
 All files from the repo have been cloned locally in /application.
 
-> Using `git clone https://github.com/Terradue/roi_pac.git /application` is not possible since the folder (in reality a filesystem) /application already exists and could contain files of folders
+> the CIOP Toolbox `ciop-github` utility allows cloning this repository to the `/application` filesystem. Once clone, the usual git commands (add, commit, push, etc.) can be used as for any other github repository
 
 ### Understanding the processing steps
 
