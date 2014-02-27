@@ -8,9 +8,9 @@ Repeat Orbit Interferometry PACkage (ROI\_PAC) is a software package created by 
 ### Pre-requisites
 
 
-1 Start a CentOS6.5 sandbox from the marketplace 
+1 Start a CentOS6.5 sandbox from the Developer Cloud Sandbox marketplace 
 
-2 Start a DEM generation appliance from the marketplace 
+2 Start a DEM generation appliance from the Developer Cloud Sandbox marketplace 
 
 3 Install FFTW 
 
