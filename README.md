@@ -100,6 +100,8 @@ The processing step `dem` produces references to
 
 #### Future work
 
+##### Auxiliary and orbital data
+
 The auxiliary and orbital data are contained in the repository. This is not practical for processing time-series of interferograms. 
 To overcome this, the `roi_pac` step could be enhanced to pick-up the auxiliary and orbital data needed for each pair of ASAR data from a virtual archive with temporal queries:
 
@@ -107,6 +109,8 @@ To overcome this, the `roi_pac` step could be enhanced to pick-up the auxiliary 
 * query the catalogue for all needed auxiliary data using the times above as time of interest
 * download the auxiliary data locally 
 * repeat the approach for the orbital data
+
+##### More improvements 
 
 #### Exploitation 
 
@@ -117,4 +121,3 @@ This application can be exploited as an OGC Web Processing Service and scale-up 
 * [Developer Cloud Sandbox](https://support.terradue.com/projects/devel-cloud-sb/wiki)
 * [ESA Virtual Archive - access SAR data](http://eo-virtual-archive4.esa.int/)
 * [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
-* 
