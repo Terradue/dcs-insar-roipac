@@ -110,4 +110,4 @@ To overcome this, the `roi_pac` step could be enhanced to pick-up the auxiliary 
 
 #### Exploitation 
 
-This application can be exploited as an OGC Web Processing Service and scale-up on Cloud computing resources to produce interferograms that can be used as input in other toolboxes such as STAMPS or GIAnT.
+This application can be exploited as an OGC Web Processing Service and scale-up on Cloud computing resources to produce interferograms that can be used as input in other toolboxes such as [STAMPS](http://homepages.see.leeds.ac.uk/~earahoo/stamps/) or [GIAnT](ftp://ftp.gps.caltech.edu/pub/piyush/AGU_giant_high.pdf).
