@@ -48,7 +48,9 @@ All files from the repo have been cloned locally in /application.
 
 ### Understanding the processing steps
 
-The application is described in the Application Descriptor file. TBW
+The application is described in the Application Descriptor file. For this application, it describes two processing nodes in the Directed Acyclic Graph (DAG):
+* processing step `dem`
+* processing step `roipac`
 
 #### Processing step `dem`
 
