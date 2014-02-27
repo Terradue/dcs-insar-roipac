@@ -1,6 +1,10 @@
 Running ROI_PAC on a Sandbox
 =
 
+### ROI_PAC on a Sandbox
+
+
+
 ### Pre-requisites
 
 
@@ -11,7 +15,7 @@ Running ROI_PAC on a Sandbox
 3 Install FFTW 
 
 ```
-sudo yum install 
+sudo yum install fftw.x86_64 fftw-static.x86_64 fftw-devel.x86_64
 ```
 
 4 Install ROI_PAC 
@@ -21,7 +25,7 @@ ROI_PAC is installed using yum. It is a package available on the sandbox softwar
 > Comply with the ROI\_PAC license by registering and getting your own copy of ROI_PAC
 
 ```
-sudo yum install roi_pac
+sudo yum install roi_pac.x86_64
 ```
 
 ### Application deployment
