@@ -48,6 +48,8 @@ All files from the repo have been cloned locally in /application.
 
 ### Understanding the processing steps
 
+The application is described in the Application Descriptor file. TBW
+
 #### Processing step `dem`
 
 ##### Inputs
