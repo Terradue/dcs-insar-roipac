@@ -111,3 +111,10 @@ To overcome this, the `roi_pac` step could be enhanced to pick-up the auxiliary 
 #### Exploitation 
 
 This application can be exploited as an OGC Web Processing Service and scale-up on Cloud computing resources to produce interferograms that can be used as input in other toolboxes such as [STAMPS](http://homepages.see.leeds.ac.uk/~earahoo/stamps/) or [GIAnT](ftp://ftp.gps.caltech.edu/pub/piyush/AGU_giant_high.pdf).
+
+### References
+
+* [Developer Cloud Sandbox](https://support.terradue.com/projects/devel-cloud-sb/wiki)
+* [ESA Virtual Archive - access SAR data](http://eo-virtual-archive4.esa.int/)
+* [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
+* 
