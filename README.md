@@ -1,7 +1,7 @@
 Running ROI_PAC on a Sandbox
 =
 
-### ROI_PAC on a Sandbox
+Repeat Orbit Interferometry PACkage (ROI_PAC) is 
 
 
 
@@ -22,7 +22,7 @@ sudo yum install fftw.x86_64 fftw-static.x86_64 fftw-devel.x86_64
 
 ROI_PAC is installed using yum. It is a package available on the sandbox software repository.
 
-> Comply with the ROI\_PAC license by registering and getting your own copy of ROI_PAC
+> ROI_pac is copyrighted software that requires a license. Licenses are available at no charge for non-commercial use from [Open Channel Foundation](http://www.openchannelfoundation.org/projects/ROI_PAC). Comply with the ROI\_PAC license by registering and getting a copy of ROI_PAC.
 
 ```
 sudo yum install roi_pac.x86_64
