@@ -114,7 +114,7 @@ Using HTTP POST request with `curl`
 
 ### Learn more about running ROI_PAC on a Sandbox
 
-[[ROI\_PAC on a Sandbox wiki|Running-ROI_PAC-on-a-Sandbox-Wiki]]
+[[ROI_PAC on a Sandbox wiki|Running-ROI_PAC-on-a-Sandbox-Wiki]]
 
 ### References
 
