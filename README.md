@@ -93,13 +93,22 @@ Then
 
 `$ ciop-simwf`
 
-#### Run the processing service via the `Sandbox roi_pac` dashboard
+#### Run the processing service via the dashboard
 
 On a Browser:
 * Type the address http://sandbox_ip/dashboard
 * Click the Invoke tab
 * 
 
-Learn more about running ROI_PAC on a Sandbox
+#### Run the processing service via OGC WPS
+
+Using HTTP GET request with `curl`
+
+`curl http://sandbox_ip/wps/?service=WPS&request=Execute&version=1.0.0&Identifier=&storeExecuteResponse=true&status=true&DataInputs=sar1=http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf;sar2=http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf`
+
+Using HTTP POST request with `curl`
+
+
+### Learn more about running ROI_PAC on a Sandbox
 
 [ROI\_PAC on a Sandbox wiki]https://github.com/Terradue/roi_pac/wiki
