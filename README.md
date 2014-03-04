@@ -81,7 +81,7 @@ The `roipac` processing tasks are:
 
 #### Run the processing steps one after the other:
 
-From the `Sandbox ROI_PAC` shell, run:
+From the `Sandbox roi_pac` shell, run:
 
 `$ ciop-simjob -f node_dem`
 
@@ -93,7 +93,7 @@ Then
 
 `$ ciop-simwf`
 
-#### Run the processing service via the `Sandbox ROI_PAC` dashboard
+#### Run the processing service via the `Sandbox roi_pac` dashboard
 
 On a Browser:
 * Type the address http://sandbox_ip/dashboard
