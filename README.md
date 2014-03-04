@@ -1,24 +1,19 @@
 Running ROI_PAC on a Sandbox
 =
 
-Repeat Orbit Interferometry PACkage (ROI\_PAC) is a software package created by the Jet Propulsion Laboratory division of NASA and CalTech for processing SAR images to create InSAR images, named interferograms [Wikipedia](http://en.wikipedia.org/wiki/ROI_PAC)
+This repository contains the application files and scripts to process a pair of Envisat ASAR data with ROI\_PAC (Repeat Orbit Interferometry PACkage), a software package created by the Jet Propulsion Laboratory division of NASA and CalTech for processing SAR images to create InSAR images, named interferograms [Wikipedia](http://en.wikipedia.org/wiki/ROI_PAC)
+
+To run this application, you will need a Developer Cloud Sandbox that can be requested from the ESA RSS Portal (http://eogrid.esrin.esa.int/cloudtoolbox/) for ESA G-POD related projects and ESA registered user accounts, or directly from Terradue's Portal (http://www.terradue.com/partners), provided user registration approval. 
 
 
 
-### Pre-requisites
-
+### Installation
 
 1 Start a CentOS6.5 sandbox from the Developer Cloud Sandbox marketplace 
 
 2 Start a DEM generation appliance from the Developer Cloud Sandbox marketplace 
 
-3 Install FFTW 
-
-```
-sudo yum install fftw.x86_64 fftw-static.x86_64 fftw-devel.x86_64
-```
-
-4 Install ROI_PAC 
+3 Install ROI_PAC 
 
 ROI_PAC is installed using yum. It is a package available on the sandbox software repository.
 
@@ -28,13 +23,15 @@ ROI_PAC is installed using yum. It is a package available on the sandbox softwar
 sudo yum install roi_pac.x86_64
 ```
 
-### Application deployment
+4 Application deployment
 
 Use `ciop-github` to clone the repository in the `application` volume:
 
 ```
 ciop-github clone -g https://github.com/Terradue/roi_pac.git
 ```
+
+### Getting started
 
 Check the contents of `/application` with:
 
