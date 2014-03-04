@@ -5,7 +5,10 @@ This repository contains the application files and scripts to process a pair of 
 
 To run this application, you will need a Developer Cloud Sandbox that can be requested from the ESA RSS Portal (http://eogrid.esrin.esa.int/cloudtoolbox/) for ESA G-POD related projects and ESA registered user accounts, or directly from Terradue's Portal (http://www.terradue.com/partners), provided user registration approval. 
 
-
+A Developer Cloud Sandbox provides Earth Science data access services, and assistance tools for a user to implement, test and validate his application.
+It runs in two different lifecycle modes: sandbox mode and cluster mode. 
+Used in Sandbox mode (single virtual machine), it supports cluster simulation and user assistance functions in building the distributed application.
+Used in Cluster mode (collections of virtual machines), it supports the deployment and execution of the application with the power of distributed computing processing over large datasets (leveraging the Hadoop Streaming MapReduce technology). 
 
 ### Installation
 
