@@ -26,6 +26,8 @@ exit $retval
 }
 trap cleanExit EXIT
 
+export TMPDIR=/tmp/wd2
+
 # prepare ROI_PAC environment variables
 export INT_BIN=/usr/bin/
 export INT_SCR=/usr/share/roi_pac
@@ -35,10 +37,6 @@ export SAR_ENV_ORB=/application/roipac/aux/asar/
 export VOR_DIR=/application/roipac/aux/vor/
 export INS_DIR=$SAR_ENV_ORB
 
-# test ampcor
-ulimit -s unlimited #20480
-
-export TMPDIR=/tmp
 cat > $TMPDIR/input
 
 # retrieve all inputs, the two ASAR products and the DEM
@@ -124,8 +122,15 @@ unw_method=old
 
 EOF
 
-cp $roipac_proc /tmp
 cd $TMPDIR/workdir
 
 process_2pass.pl $roipac_proc 1>&2
-  
+
+ciop-log "INFO" "Compressing results" 
+tar cvfz $intdir.tgz $intdir
+tar cvfz $geodir.tgz $geodir
+tar cvfz sim_3asec.tgz sim_3asec
+
+ciop-log "INFO" "That's all folks"
+
+
