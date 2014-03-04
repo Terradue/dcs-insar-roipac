@@ -112,3 +112,9 @@ Using HTTP POST request with `curl`
 ### Learn more about running ROI_PAC on a Sandbox
 
 [ROI\_PAC on a Sandbox wiki]https://github.com/Terradue/roi_pac/wiki
+
+### References
+
+* [Developer Cloud Sandbox](https://support.terradue.com/projects/devel-cloud-sb/wiki)
+* [ESA Virtual Archive - access SAR data](http://eo-virtual-archive4.esa.int/)
+* [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
