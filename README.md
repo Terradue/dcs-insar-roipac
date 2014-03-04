@@ -9,9 +9,9 @@ To run this application, you will need a Developer Cloud Sandbox that can be req
 
 ### Installation
 
-1 Start a CentOS6.5 sandbox from the Developer Cloud Sandbox marketplace 
+1 Start a CentOS6.5 sandbox from the Developer Cloud Sandbox marketplace, call it `Sandbox roi_pac`
 
-2 Start a DEM generation appliance from the Developer Cloud Sandbox marketplace 
+2 Start a DEM generation appliance from the Developer Cloud Sandbox marketplace, call it `Sandbox dem`
 
 3 Install ROI_PAC 
 
@@ -33,64 +33,36 @@ ciop-github clone -g https://github.com/Terradue/roi_pac.git
 
 ### Getting started
 
-Check the contents of `/application` with:
+We will process an Envisat pair from 2010 Baja California earthquake.
 
-```
-ls -la /application
-```
-
-All files from the repo have been cloned locally in /application.
-
-> the CIOP Toolbox `ciop-github` utility allows cloning this repository to the `/application` filesystem. Once clone, the usual git commands (add, commit, push, etc.) can be used as for any other github repository
-
-### Understanding the processing steps
-
-The application is described in the Application Descriptor file. For this application, it describes two processing nodes in the Directed Acyclic Graph (DAG):
+The application is described in the Application Descriptor file (application.xml), it describes two processing nodes:
 * processing step `dem`
 * processing step `roipac`
 
 #### Processing step `dem`
-
-This processing step relies on an external WPS service to generate DEMs using STRM v4.1 data for ROI_PAC or GAMMA.
-An instance of that appliance has to be triggered to process this step.
-
-##### Inputs
 
 The processing step `dem` takes the two Envisat ASAR datasets references:
 
 * http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf
 * http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf
 
-These products are also available on the European Space Agency (ESA) virtual archive available at http://eo-virtual-archive4.esa.int/ 
-
+> These products are also available on the European Space Agency (ESA) virtual archive available at http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/html?startIndex=0&start=2010-03-28&stop=2010-05-02&bbox=-116,30,-112,33&track=[084,084]
 Browsing for data does not require registering while downloading the data requires an ESA UM-SSO account (a few steps starting here http://eosupport.eo.esa.int/sso/registration.php)
 
-The query URL on the virtual archive is:
+The `dem` processing tasks are: 
 
-http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/html?startIndex=0&start=2010-03-28&stop=2010-05-02&bbox=-116,30,-112,33&track=[084,084]
-
-##### Parameters
-
-The processing step `dem` uses the DEM generation appliance OGC WPS service to generate a DEM spanning 1 degree in all directions from the ASAR product centroid.
-
-The processing step `dem` needs the DEM generation appliance OGC WPS service access point:
-
-http://<DEM generation appliance IP>:8080/wps/WebProcessingService
-
-##### Pseudo-code
-
-* invoke the DEM generation appliance OGC WPS service with one of the ASAR product reference
-* parse the DEM generation appliance OGC WPS result to grep the URL to the DEM 
+* invoke the `Sandbox dem` WPS service with one of the ASAR product reference
+* parse the `Sandbox dem` WPS result to grep the URL to the DEM 
 * pass the ASAR dataset and DEM references to the `roi_pac` processing step
 
-##### Output
+> The processing step `dem` uses the `Sandbox dem` to generate a DEM spanning 1 degree in all directions from the ASAR product's centroid. The `Sandbox dem` WPS service access point is defined in the file application.xml, edit it with the `Sandbox dem` IP.
 
 The processing step `dem` produces references to 
 
 * The ASAR datasets
   * http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf
   * http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf 
-* the DEM 
+* the DEM  
 
 #### Processing step `roi_pac`
 
