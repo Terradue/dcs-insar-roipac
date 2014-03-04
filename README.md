@@ -64,15 +64,19 @@ The processing step `dem` produces references to
   * http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf 
 * the DEM  
 
-#### Processing step `roi_pac`
+#### Processing step `roipac`
 
-##### Inputs
+The `roipac` processing step takes as inputs the references to the `dem` processing step outputs to generate the interferogram out of the Envisat ASAR pair of products.
 
-##### Parameters
+The `roipac` processing tasks are: 
 
-##### Pseudo-code
+* Copy the generated DEM to the working directory 
+* For each of the Envisat ASAR products:
+ * Copy the product to the working directory
+ * Invoke ROI\_PAC's `make_raw_envi.pl` script to convert to the RAW format
+* Generate the ROI\_PAC proc file
+* Invoke ROI\_PAC's `process_2pass.pl` script to generate the interferogramme  
 
-##### Output
 
 #### Future work
 
