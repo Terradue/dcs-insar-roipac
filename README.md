@@ -77,27 +77,29 @@ The `roipac` processing tasks are:
 * Generate the ROI\_PAC proc file
 * Invoke ROI\_PAC's `process_2pass.pl` script to generate the interferogramme  
 
+### Running the application 
 
-#### Future work
+#### Run the processing steps one after the other:
 
-##### Auxiliary and orbital data
+From the `Sandbox ROI_PAC` shell, run:
 
-The auxiliary and orbital data are contained in the repository. This is not practical for processing time-series of interferograms. 
-To overcome this, the `roi_pac` step could be enhanced to pick-up the auxiliary and orbital data needed for each pair of ASAR data from a virtual archive with temporal queries:
+`$ ciop-simjob -f node_dem`
 
-* get the ASAR product start and stop times
-* query the catalogue for all needed auxiliary data using the times above as time of interest
-* download the auxiliary data locally 
-* repeat the approach for the orbital data
+Then 
 
-##### More improvements 
+`$ ciop-simjob -f node_roipac`
 
-#### Exploitation 
+#### Run the processing steps in a single step:
 
-This application can be exploited as an OGC Web Processing Service and scale-up on Cloud computing resources to produce interferograms that can be used as input in other toolboxes such as [STAMPS](http://homepages.see.leeds.ac.uk/~earahoo/stamps/) or [GIAnT](ftp://ftp.gps.caltech.edu/pub/piyush/AGU_giant_high.pdf).
+`$ ciop-simwf`
 
-### References
+#### Run the processing service via the `Sandbox ROI_PAC` dashboard
 
-* [Developer Cloud Sandbox](https://support.terradue.com/projects/devel-cloud-sb/wiki)
-* [ESA Virtual Archive - access SAR data](http://eo-virtual-archive4.esa.int/)
-* [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
+On a Browser:
+* Type the address http://sandbox_ip/dashboard
+* Click the Invoke tab
+* 
+
+Learn more about running ROI_PAC on a Sandbox
+
+[ROI\_PAC on a Sandbox wiki]https://github.com/Terradue/roi_pac/wiki
