@@ -84,11 +84,11 @@ The `roipac` processing tasks are:
 
 #### Run the processing steps one after the other:
 
-From the `Sandbox roi_pac` shell, run:
+From the `Sandbox roi_pac` shell, to submit the execution of the worklflow node `node_dem` run:
 
 `$ ciop-simjob -f node_dem`
 
-Then 
+Then, with the inputs from the above `node_dem` execution, the `node_roipac` can be submitted: 
 
 `$ ciop-simjob -f node_roipac`
 
@@ -96,12 +96,17 @@ Then
 
 `$ ciop-simwf`
 
+This will submit the complete worflow with nodes `node_dem` and `node_roipac`
+
 #### Run the processing service via the dashboard
+
+The Sandbox dashboard allows submitting and monitoring an OGC WPS request with a GUI
 
 On a Browser:
 * Type the address http://sandbox_ip/dashboard
 * Click the Invoke tab
-* 
+* Fill the processing request 
+* Submit the process by clicking "Run"
 
 #### Run the processing service via OGC WPS
 
@@ -111,6 +116,7 @@ Using HTTP GET request with `curl`
 
 Using HTTP POST request with `curl`
 
+TBW
 
 ### Learn more about running ROI_PAC on a Sandbox
 
@@ -121,3 +127,4 @@ Using HTTP POST request with `curl`
 * [Developer Cloud Sandbox](https://support.terradue.com/projects/devel-cloud-sb/wiki)
 * [ESA Virtual Archive - access SAR data](http://eo-virtual-archive4.esa.int/)
 * [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
+* [SSEP CloudToolbox](http://eogrid.esrin.esa.int/cloudtoolbox/) to request a Developer Cloud Sandbox PaaS and run this application
