@@ -2,14 +2,14 @@
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="srtmdem">
   <jobTemplates>
  <jobTemplate id="test">
-       <streamingExecutable>/application/test/run.sh</streamingExecutable>
-             <defaultParameters>
-                           </defaultParameters>
-                                 <defaultJobconf>
-                                         <property id="mapred.task.timeout">9900000000</property>
-                                                 <property id="ciop.job.max.tasks">1</property>
-                                                 </defaultJobconf>
-                                                     </jobTemplate> 
+	<streamingExecutable>/application/test/run.sh</streamingExecutable>
+	<defaultParameters>
+	</defaultParameters>
+	<defaultJobconf>
+		<property id="mapred.task.timeout">9900000000</property>
+		<property id="ciop.job.max.tasks">1</property>
+	</defaultJobconf>
+</jobTemplate> 
  <jobTemplate id="dem">
       <streamingExecutable>/application/dem/run.sh</streamingExecutable>
       <defaultParameters>
