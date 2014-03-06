@@ -12,11 +12,9 @@ Used in Cluster mode (collections of virtual machines), it supports the deployme
 
 ### Installation
 
-1. Start a CentOS6.5 sandbox from the Developer Cloud Sandbox marketplace, name it `app roi_pac`
+1. Log on the `app roi_pac` sandbox via SSH
 
-2. Start a DEM generation appliance from the Developer Cloud Sandbox marketplace, name it `app dem`
-
-3. Install ROI_PAC 
+2. Install ROI_PAC 
 
 ROI_PAC is installed using yum. It is a package available on the sandbox software repository.
 
@@ -26,7 +24,7 @@ ROI_PAC is installed using yum. It is a package available on the sandbox softwar
 sudo yum install roi_pac.x86_64
 ```
 
-4 Application deployment
+3 Application deployment
 
 Use `ciop-github` to clone the repository in the `application` volume:
 
