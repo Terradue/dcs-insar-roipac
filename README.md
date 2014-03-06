@@ -52,11 +52,11 @@ Browsing for data does not require registering while downloading the data requir
 
 The `dem` processing tasks are: 
 
-* invoke the `Sandbox dem` WPS service with one of the ASAR product reference
-* parse the `Sandbox dem` WPS result to grep the URL to the DEM 
-* pass the ASAR dataset and DEM references to the `roi_pac` processing step
+* invoke the _strm dem_ WPS service with one of the ASAR product reference
+* parse the _strm dem_ WPS result to grep the URL to the DEM 
+* pass the ASAR dataset and DEM references to the `roipac` processing step
 
-> The processing step `dem` uses the `Sandbox dem` to generate a DEM spanning 1 degree in all directions from the ASAR product's centroid. The `Sandbox dem` WPS service access point is defined in the file application.xml, edit it with the `Sandbox dem` IP.
+> The processing step `dem` uses the `strm dem` to generate a DEM spanning 1 degree in all directions from the ASAR product's centroid. The _strm dem_ WPS service access point is defined in the file application.xml.
 
 The processing step `dem` produces references to 
 
