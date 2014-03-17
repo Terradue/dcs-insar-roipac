@@ -8,6 +8,8 @@ SUCCESS=0
 ERR_INVALIDFORMAT=2
 ERR_NOIDENTIFIER=5
 ERR_NODEM=7
+ERR_PROCESS2PASS=20
+
 
 # add a trap to exit gracefully
 function cleanExit ()
@@ -26,8 +28,9 @@ exit $retval
 }
 trap cleanExit EXIT
 
+rm -fr /tmp/wd2
 export TMPDIR=/tmp/wd2
-
+mkdir -p $TMPDIR
 # prepare ROI_PAC environment variables
 export INT_BIN=/usr/bin/
 export INT_SCR=/usr/share/roi_pac
@@ -86,6 +89,10 @@ do
   fi
 done
 
+ciop-log "INFO" "Conversion of SAR pair to RAW completed"
+
+ciop-log "INFO" "Generation of ROI_PAC proc file"
+
 # generate ROI_PAC proc file
 cat >> $roipac_proc << EOF
 IntDir=$intdir
@@ -122,9 +129,16 @@ unw_method=old
 
 EOF
 
-cd $TMPDIR/workdir
+cp $roipac_proc /tmp
 
+ciop-log "INFO" "Invoking ROI_PAC process_2pass"
+
+cd $TMPDIR/workdir
 process_2pass.pl $roipac_proc 1>&2
+
+res=$?
+
+[ $res != 0 ] && exit $ERR_PROCESS2PASS
 
 ciop-log "INFO" "Compressing results" 
 tar cvfz $intdir.tgz $intdir

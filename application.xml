@@ -13,7 +13,7 @@
  <jobTemplate id="dem">
       <streamingExecutable>/application/dem/run.sh</streamingExecutable>
       <defaultParameters>
-        <parameter id="dem_access_point">http://srtm-dem.terradue.int:8080/wps/WebProcessingService</parameter>
+        <parameter id="dem_access_point">http://10.16.10.23:8080/wps/WebProcessingService</parameter>
       </defaultParameters>
       <defaultJobconf>
         <property id="mapred.task.timeout">9900000000</property>
