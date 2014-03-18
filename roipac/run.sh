@@ -28,9 +28,16 @@ exit $retval
 }
 trap cleanExit EXIT
 
-rm -fr /tmp/wd2
-export TMPDIR=/tmp/wd2
-mkdir -p $TMPDIR
+# testing long tmp dirname
+#rm -fr /tmp/wd2
+#export TMPDIR=/tmp/wd2
+#mkdir -p $TMPDIR
+UUIDTMP="/tmp/`uuidgen`"
+ln -s $TMPDIR $UUIDTMP
+
+export TMPDIR=$UUIDTMP
+
+
 # prepare ROI_PAC environment variables
 export INT_BIN=/usr/bin/
 export INT_SCR=/usr/share/roi_pac
@@ -87,7 +94,7 @@ do
     intdir=${intdir}_$sar_date
     geodir=${geodir}-${sar_date_short}
   fi
-done
+done 
 
 ciop-log "INFO" "Conversion of SAR pair to RAW completed"
 
@@ -134,7 +141,7 @@ cp $roipac_proc /tmp
 ciop-log "INFO" "Invoking ROI_PAC process_2pass"
 
 cd $TMPDIR/workdir
-process_2pass.pl $roipac_proc 1>&2
+process_2pass.pl $roipac_proc 1>&2 
 
 res=$?
 
@@ -144,6 +151,9 @@ ciop-log "INFO" "Compressing results"
 tar cvfz $intdir.tgz $intdir
 tar cvfz $geodir.tgz $geodir
 tar cvfz sim_3asec.tgz sim_3asec
+
+ciop-log "INFO" "Publishing results"
+ciop-publish -m -d s3 $intdir.tgz $geodir.tgz sim_3asec.tgz
 
 ciop-log "INFO" "That's all folks"
 
