@@ -87,11 +87,11 @@ do
   if [ ! -e "$roipac_proc" ]
   then 
     echo "SarDir1=$sar_date" > $roipac_proc 
-    intdir="int_$sar_date"
-    geodir="geo_$sar_date_short"
+    intdir="$sar_date"
+    geodir="geo_${sar_date_short}"
   else    
     echo "SarDir2=$sar_date" >> $roipac_proc
-    intdir=${intdir}_$sar_date
+    intdir=${intdir}-${sar_date}
     geodir=${geodir}-${sar_date_short}
   fi
 done 
@@ -102,7 +102,7 @@ ciop-log "INFO" "Generation of ROI_PAC proc file"
 
 # generate ROI_PAC proc file
 cat >> $roipac_proc << EOF
-IntDir=$intdir
+IntDir=int_${intdir}
 SimDir=sim_3asec
 # new sim for this track at 4rlks
 do_sim=yes
@@ -136,8 +136,6 @@ unw_method=old
 
 EOF
 
-cp $roipac_proc /tmp
-
 ciop-log "INFO" "Invoking ROI_PAC process_2pass"
 
 cd $TMPDIR/workdir
@@ -147,13 +145,26 @@ res=$?
 
 [ $res != 0 ] && exit $ERR_PROCESS2PASS
 
-ciop-log "INFO" "Compressing results" 
-tar cvfz $intdir.tgz $intdir
-tar cvfz $geodir.tgz $geodir
-tar cvfz sim_3asec.tgz sim_3asec
+cd int_${intdir} 
+
+ciop-log "INFO" "Geocoding the interferogram"
+geocode.pl geomap_4rlks.trans $intdir.int geo_${intdir}.int
+
+ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"
+/usr/local/bin/roipac2grdfile -t real -i geo_${intdir}.int -r geo_${intdir}.int.rsc -o geo_${intdir}.int.nc
+
+gdal_translate NETCDF:"geo_${intdir}.int.nc":phase geo_${intdir}.int.phase.tif
+gdal_translate NETCDF:"geo_${intdir}.int.nc":magnitude geo_${intdir}.int.magnitude.tif
 
 ciop-log "INFO" "Publishing results"
-ciop-publish -m -d s3 $intdir.tgz $geodir.tgz sim_3asec.tgz
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}_baseline.rsc 
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.phase.tif
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.magnitude.tif
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int.rsc
+
+rm -fr $UUIDTMP
 
 ciop-log "INFO" "That's all folks"
 
