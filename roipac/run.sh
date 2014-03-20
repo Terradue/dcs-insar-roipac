@@ -158,11 +158,35 @@ gdal_translate NETCDF:"geo_${intdir}.int.nc":magnitude geo_${intdir}.int.magnitu
 
 ciop-log "INFO" "Publishing results"
 
+ciop-log "INFO" "Publishing baseline file"
+
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}_baseline.rsc 
+
+ciop-log "INFO" "Publishing multi-look interferograms"
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}-sim*.int
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}-sim*.int.rsc
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.int
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.int.rsc
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.unw
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.unw.rsc
+
+for file in `find . -name "${intdir}*.cor"`
+do 
+  ciop-publish -m $TMPDIR/workdir/int_${intdir}/$file
+  ciop-publish -m $TMPDIR/workdir/int_${intdir}/$file.rsc
+done
+
+ciop-log "INFO" "Publishing tif files"
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.phase.tif
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.magnitude.tif
+
+ciop-log "INFO" "Publishing full resolution interferogram"
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int.rsc
+
 
 rm -fr $UUIDTMP
 
