@@ -65,18 +65,21 @@ do
   [ $res != 0 ] && exit $ERR_VOR
 done
 
-# retrieve all inputs, the two ASAR products and the DEM
+# retrieve the DEM
 mkdir -p $TMPDIR/workdir/dem
 
-dem_url=`cat $TMPDIR/input | grep DEM | cut -d "=" -f 2`
-ciop-log "DEBUG" "DEM URL: $dem_url"
+dem_wps_result_xml=`cat $TMPDIR/input | egrep -v '(aux|vor|sar)'`
 
-ciop-copy -o $TMPDIR/workdir/dem/ $dem_url
+# extract the result URL
+curl -L -s $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
 
+tar -C $TMPDIR/workdir/dem/ xfz dem.tgz
 dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
 
+# the path to the ROI_PAC proc file
 roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
+# get all SAR products
 for input in `cat $TMPDIR/input | grep sar` 
 do
   sar_url=`echo $input | cut -d "=" -f 2`
