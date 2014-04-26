@@ -6,9 +6,8 @@ source ${ciop_job_include}
 
 # define the exit codes
 SUCCESS=0
-ERR_INVALIDFORMAT=2
-ERR_NOIDENTIFIER=5
-ERR_NODEM=7
+ERR_AUX=2
+ERR_VOR=4
 
 # add a trap to exit gracefully
 function cleanExit ()
@@ -17,24 +16,14 @@ local retval=$?
 local msg=""
 case "$retval" in
 $SUCCESS) msg="Processing successfully concluded";;
-$ERR_INVALIDFORMAT) msg="Invalid format must be roi_pac or gamma";;
-$ERR_NOIDENTIFIER) msg="Could not retrieve the dataset identifier";;
-$ERR_NODEM) msg="DEM not generated";;
+$ERR_AUX) msg="Failed to retrieve reference to auxiliary data";;
+$ERR_VOR) msg="Failed to retrieve reference to orbital data";;
 *) msg="Unknown error";;
 esac
 [ "$retval" != "0" ] && ciop-log "ERROR" "Error $retval - $msg, processing aborted" || ciop-log "INFO" "$msg"
 exit $retval
 }
 trap cleanExit EXIT
-
-# for all input ASAR products, retrieve the auxiliary products
-# ASA_CON_AX
-# ASA_INS_AX
-# ASA_XCA_AX
-# ASA_XCH_AX
-
-# and orbit data
-# DOR_VOR_AX
 
 # get the catalogue access point
 cat_osd_root="`ciop-getparam aux_catalogue`"
@@ -58,17 +47,19 @@ do
 	
 	for aux in "ASA_CON_AX ASA_INS_AX ASA_XCA_AX ASA_XCH_AX"
 	do
-		ref=`getAUXref $input $ods/$aux/description`
+		ciop-log "INFO" "Getting a reference to $aux"
+		ref=`getAUXref $input $cat_osd_root/$aux/description`
 		
 		#pass the aux reference to the next node
-		echo "aux=$ref" | ciop-publish -s
+		[ "$ref" != "" ] && echo "aux=$ref" | ciop-publish -s || exit $ERR_AUX
 	done
 	
 	# DOR_VOR_AX
-	ref=`getAUXref $input $ods/DOR_VOR_AX/description`
+	ciop-log "INFO" "Getting a reference to DOR_VOR_AX"
+	ref=`getAUXref $input $cat_osd_root/DOR_VOR_AX/description`
 		
 	#pass the aux reference to the next node
-	echo "dor=$ref" | ciop-publish -s
+	[ "$ref" != "" ] && echo "vor=$ref" | ciop-publish -s || exit $ERR_VOR
 		
 	# pass the SAR reference to the next node
 	echo "sar=$input" | ciop-publish -s
