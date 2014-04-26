@@ -36,6 +36,9 @@ trap cleanExit EXIT
 # and orbit data
 # DOR_VOR_AX
 
+# get the catalogue access point
+cat_osd_root="`ciop-getparam aux_catalogue`"
+
 function getAUXref() {
   local rdf=$1
   local ods=$2
@@ -53,8 +56,20 @@ while read input
 do
 	ciop-log "INFO" "dealing with $input"
 	
+	for aux in "ASA_CON_AX ASA_INS_AX ASA_XCA_AX ASA_XCH_AX"
+	do
+		ref=`getAUXref $input $ods/$aux/description`
+		
+		#pass the aux reference to the next node
+		echo "aux=$ref" | ciop-publish -s
+	done
 	
-	
-	# pass the SAR reference to the next job
+	# DOR_VOR_AX
+	ref=`getAUXref $input $ods/DOR_VOR_AX/description`
+		
+	#pass the aux reference to the next node
+	echo "dor=$ref" | ciop-publish -s
+		
+	# pass the SAR reference to the next node
 	echo "sar=$input" | ciop-publish -s
 done
