@@ -29,6 +29,10 @@ exit $retval
 }
 trap cleanExit EXIT
 
+# create a shorter TMPDIR name for some ROI_PAC scripts/binaires 
+UUIDTMP="/tmp/`uuidgen`"
+ln -s $TMPDIR $UUIDTMP
+
 export TMPDIR=/tmp/wd2
 
 # prepare ROI_PAC environment variables
@@ -36,8 +40,8 @@ export INT_BIN=/usr/bin/
 export INT_SCR=/usr/share/roi_pac
 export PATH=${INT_BIN}:${INT_SCR}:${PATH}
 
-export SAR_ENV_ORB=/application/roipac/aux/asar/
-export VOR_DIR=/application/roipac/aux/vor/
+export SAR_ENV_ORB=$TMPDIR/aux
+export VOR_DIR=$TMPDIR/vor
 export INS_DIR=$SAR_ENV_ORB
 
 cat > $TMPDIR/input
@@ -115,9 +119,13 @@ do
   fi
 done
 
+ciop-log "INFO" "Conversion of SAR pair to RAW completed"
+
+ciop-log "INFO" "Generation of ROI_PAC proc file"
+
 # generate ROI_PAC proc file
 cat >> $roipac_proc << EOF
-IntDir=$intdir
+IntDir=int_${intdir}
 SimDir=sim_3asec
 # new sim for this track at 4rlks
 do_sim=yes
@@ -151,15 +159,58 @@ unw_method=old
 
 EOF
 
-cd $TMPDIR/workdir
+ciop-log "INFO" "Invoking ROI_PAC process_2pass"
 
+cd $TMPDIR/workdir
 process_2pass.pl $roipac_proc 1>&2
 
-ciop-log "INFO" "Compressing results" 
-tar cvfz $intdir.tgz $intdir
-tar cvfz $geodir.tgz $geodir
-tar cvfz sim_3asec.tgz sim_3asec
+res=$?
+
+[ $res != 0 ] && exit $ERR_PROCESS2PASS
+
+cd int_${intdir}
+
+ciop-log "INFO" "Geocoding the interferogram"
+geocode.pl geomap_4rlks.trans $intdir.int geo_${intdir}.int
+
+ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"
+/usr/local/bin/roipac2grdfile -t real -i geo_${intdir}.int -r geo_${intdir}.int.rsc -o geo_${intdir}.int.nc
+
+gdal_translate NETCDF:"geo_${intdir}.int.nc":phase geo_${intdir}.int.phase.tif
+gdal_translate NETCDF:"geo_${intdir}.int.nc":magnitude geo_${intdir}.int.magnitude.tif
+
+ciop-log "INFO" "Publishing results"
+
+ciop-log "INFO" "Publishing baseline file"
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}_baseline.rsc
+
+ciop-log "INFO" "Publishing multi-look interferograms"
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}-sim*.int
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}-sim*.int.rsc
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.int
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.int.rsc
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.unw
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.unw.rsc
+
+for file in `find . -name "${intdir}*.cor"`
+do
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/$file
+  ciop-publish -m $TMPDIR/workdir/int_${intdir}/$file.rsc
+done
+
+ciop-log "INFO" "Publishing tif files"
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.phase.tif
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.magnitude.tif
+
+ciop-log "INFO" "Publishing full resolution interferogram"
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int.rsc
+
+
+rm -fr $UUIDTMP
 
 ciop-log "INFO" "That's all folks"
-
-
