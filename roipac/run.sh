@@ -5,6 +5,8 @@ source ${ciop_job_include}
 
 # define the exit codes
 SUCCESS=0
+ERR_AUX=4
+ERR_VOR=6
 ERR_INVALIDFORMAT=2
 ERR_NOIDENTIFIER=5
 ERR_NODEM=7
@@ -16,6 +18,7 @@ local retval=$?
 local msg=""
 case "$retval" in
 $SUCCESS) msg="Processing successfully concluded";;
+$ERR_AUX) msg="Failed to retrieve auxiliary products";;
 $ERR_INVALIDFORMAT) msg="Invalid format must be roi_pac or gamma";;
 $ERR_NOIDENTIFIER) msg="Could not retrieve the dataset identifier";;
 $ERR_NODEM) msg="DEM not generated";;
@@ -38,6 +41,29 @@ export VOR_DIR=/application/roipac/aux/vor/
 export INS_DIR=$SAR_ENV_ORB
 
 cat > $TMPDIR/input
+
+# retrieve the aux files
+
+mkdir -p $TMPDIR/aux
+for input in `cat $TMPDIR/input | grep aux` 
+do
+  echo $input | ciop-copy -O $TMPDIR/aux -
+
+  res=$?
+  
+  [ $res != 0 ] && exit $ERR_AUX
+done
+
+# retrieve the orbit data
+mkdir -p $TMPDIR/vor
+for input in `cat $TMPDIR/input | grep vor` 
+do
+  echo $input | ciop-copy -O $TMPDIR/vor -
+
+  res=$?
+  
+  [ $res != 0 ] && exit $ERR_VOR
+done
 
 # retrieve all inputs, the two ASAR products and the DEM
 mkdir -p $TMPDIR/workdir/dem
