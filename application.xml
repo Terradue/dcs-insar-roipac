@@ -3,12 +3,15 @@
   <jobTemplates>
     <jobTemplate id="echo">
       <streamingExecutable>/application/echo/run.sh</streamingExecutable>
+      <defaultParameters>
+      	<parameter id="aux_catalogue">http://catalogue.terradue.int/catalogue/search</parameter>
+      </defaultParameters>
       <defaultJobconf>
 	<property id="ciop.job.max.tasks">1</property>	      
       </defaultJobconf>
     </jobTemplate>
     <jobTemplate id="dem" jobType="wps_client">
-      <streamingExecutable>/application/dem/run.sh</streamingExecutable>
+      <!--<streamingExecutable>/application/dem/run.sh</streamingExecutable>-->
         <defaultParameters />
         <defaultJobconf>
           <property id="ogc.wps.access.point">http://10.16.10.23:8080/wps/WebProcessingService</property>
