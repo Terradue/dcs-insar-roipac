@@ -33,7 +33,7 @@ trap cleanExit EXIT
 UUIDTMP="/tmp/`uuidgen`"
 ln -s $TMPDIR $UUIDTMP
 
-export TMPDIR=/tmp/wd2
+#export TMPDIR=/tmp/wd2
 
 # prepare ROI_PAC environment variables
 export INT_BIN=/usr/bin/
@@ -51,7 +51,7 @@ cat > $TMPDIR/input
 mkdir -p $TMPDIR/aux
 for input in `cat $TMPDIR/input | grep aux` 
 do
-  echo $input | ciop-copy -O $TMPDIR/aux -
+  echo ${input#aux=} | ciop-copy -O $TMPDIR/aux -
 
   res=$?
   
@@ -62,7 +62,7 @@ done
 mkdir -p $TMPDIR/vor
 for input in `cat $TMPDIR/input | grep vor` 
 do
-  echo $input | ciop-copy -O $TMPDIR/vor -
+  echo ${input#vor=} | ciop-copy -O $TMPDIR/vor -
 
   res=$?
   
@@ -72,12 +72,24 @@ done
 # retrieve the DEM
 mkdir -p $TMPDIR/workdir/dem
 
+cat $TMPDIR/input
+ciop-log "INFO" "PAUSE"
 dem_wps_result_xml=`cat $TMPDIR/input | egrep -v '(aux|vor|sar)'`
 
 # extract the result URL
-curl -L -s $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
+ciop-log "INFO" "ciop-copy $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz"
+#curl -L -s $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
+wps_result=`ciop-copy $dem_wps_result_xml`
 
-tar -C $TMPDIR/workdir/dem/ xfz dem.tgz
+# workaround for spurious bytes in the response 
+tgz_metalink=`tail --bytes=+3 $wps_result | xsltproc /application/roipac/xslt/getresult.xsl -`
+
+curl -L -s $tgz_metalink | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
+
+mkdir $TMPDIR/workdir/dem/
+
+tar xzf $TMPDIR/workdir/dem/dem.tgz -C $TMPDIR/workdir/dem/ 
+
 dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
 
 # the path to the ROI_PAC proc file
@@ -87,7 +99,7 @@ roipac_proc=$TMPDIR/workdir/roi_pac.proc
 for input in `cat $TMPDIR/input | grep sar` 
 do
   sar_url=`echo $input | cut -d "=" -f 2`
-
+  ciop-log "INFO" "SAR URL = $sar_url"
   # get the date in format YYMMDD
   sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
   sar_date_short=`echo $sar_date | cut -c 1-4`
