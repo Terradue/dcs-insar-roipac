@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="us-ascii"?>
-<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="srtmdem">
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="roipac">
   <jobTemplates>
     <jobTemplate id="echo">
       <streamingExecutable>/application/echo/run.sh</streamingExecutable>
