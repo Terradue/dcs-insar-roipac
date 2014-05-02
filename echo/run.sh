@@ -31,27 +31,29 @@ cat_osd_root="`ciop-getparam aux_catalogue`"
 function getAUXref() {
   local rdf=$1
   local ods=$2
- 
+
   startdate="`ciop-casmeta -f "ical:dtstart" $rdf | tr -d "Z"`"
   stopdate="`ciop-casmeta -f "ical:dtend" $rdf | tr -d "Z"`"
- 
-	opensearch-client -f Rdf \
-		-p time:start=$startdate \
-		-p time:end=$stopdate \
-		$ods
+
+  opensearch-client -v -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods
 }
+
 
 while read input
 do
 	ciop-log "INFO" "dealing with $input"
 	
-	for aux in "ASA_CON_AX ASA_INS_AX ASA_XCA_AX ASA_XCH_AX"
+	for aux in ASA_CON_AX ASA_INS_AX ASA_XCA_AX ASA_XCH_AX
 	do
 		ciop-log "INFO" "Getting a reference to $aux"
-		ref=`getAUXref $input $cat_osd_root/$aux/description`
 		
-		#pass the aux reference to the next node
-		[ "$ref" != "" ] && echo "aux=$ref" | ciop-publish -s || exit $ERR_AUX
+		for url in `getAUXref $input $cat_osd_root/$aux/description`
+		do
+			ciop-log "INFO" "the url is $url"
+ 			#pass the aux reference to the next node
+			[ "$url" != "" ] && echo "aux=$url" | ciop-publish -s || exit $ERR_AUX
+		done
+		
 	done
 	
 	# DOR_VOR_AX
