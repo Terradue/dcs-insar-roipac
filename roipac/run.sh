@@ -19,6 +19,7 @@ local msg=""
 case "$retval" in
 $SUCCESS) msg="Processing successfully concluded";;
 $ERR_AUX) msg="Failed to retrieve auxiliary products";;
+$ERR_VOR) msg="Failed to retrieve orbital data";;
 $ERR_INVALIDFORMAT) msg="Invalid format must be roi_pac or gamma";;
 $ERR_NOIDENTIFIER) msg="Could not retrieve the dataset identifier";;
 $ERR_NODEM) msg="DEM not generated";;
@@ -33,7 +34,8 @@ trap cleanExit EXIT
 UUIDTMP="/tmp/`uuidgen`"
 ln -s $TMPDIR $UUIDTMP
 
-export TMPDIR=/tmp/wd2
+export TMPDIR=$UUIDTMP
+#export TMPDIR=/tmp/wd2
 
 # prepare ROI_PAC environment variables
 export INT_BIN=/usr/bin/
@@ -51,7 +53,7 @@ cat > $TMPDIR/input
 mkdir -p $TMPDIR/aux
 for input in `cat $TMPDIR/input | grep aux` 
 do
-  echo $input | ciop-copy -O $TMPDIR/aux -
+  echo ${input#aux=} | ciop-copy -O $TMPDIR/aux -
 
   res=$?
   
@@ -62,7 +64,7 @@ done
 mkdir -p $TMPDIR/vor
 for input in `cat $TMPDIR/input | grep vor` 
 do
-  echo $input | ciop-copy -O $TMPDIR/vor -
+  echo ${input#vor=} | ciop-copy -O $TMPDIR/vor -
 
   res=$?
   
@@ -72,21 +74,34 @@ done
 # retrieve the DEM
 mkdir -p $TMPDIR/workdir/dem
 
+cat $TMPDIR/input
+ciop-log "INFO" "PAUSE"
 dem_wps_result_xml=`cat $TMPDIR/input | egrep -v '(aux|vor|sar)'`
 
 # extract the result URL
-curl -L -s $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
+ciop-log "INFO" "ciop-copy $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz"
+#curl -L -s $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
+wps_result=`ciop-copy $dem_wps_result_xml`
 
-tar -C $TMPDIR/workdir/dem/ xfz dem.tgz
+# workaround for spurious bytes in the response 
+tgz_metalink=`tail --bytes=+3 $wps_result | xsltproc /application/roipac/xslt/getresult.xsl -`
+
+curl -L -s $tgz_metalink | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
+
+mkdir $TMPDIR/workdir/dem/
+
+tar xzf $TMPDIR/workdir/dem/dem.tgz -C $TMPDIR/workdir/dem/ 
+
 dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
 
 # the path to the ROI_PAC proc file
 roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
 # get all SAR products
-for input in `cat $TMPDIR/input | grep sar` 
+
+for input in `cat $TMPDIR/input | grep sar`
 do
-  sar_url=`echo $input | cut -d "=" -f 2`
+sar_url=`echo $input | cut -d "=" -f 2`
 
   # get the date in format YYMMDD
   sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
@@ -97,7 +112,7 @@ do
   sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
   ciop-log "INFO" "SAR identifier: $sar_identifier"
 
-  sar_folder=$TMPDIR/workdir/$sar_date 
+  sar_folder=$TMPDIR/workdir/$sar_date
   mkdir -p $sar_folder
   
   # get ASAR products
@@ -105,19 +120,19 @@ do
 
   cd $sar_folder
   ciop-log "DEBUG" "make_raw_envi.pl $sar_identifier DOR $sar_date"
-  make_raw_envi.pl $sar_identifier DOR $sar_date 1>&2 
+  make_raw_envi.pl $sar_identifier DOR $sar_date 1>&2
 
   if [ ! -e "$roipac_proc" ]
-  then 
-    echo "SarDir1=$sar_date" > $roipac_proc 
-    intdir="int_$sar_date"
-    geodir="geo_$sar_date_short"
-  else    
+  then
+    echo "SarDir1=$sar_date" > $roipac_proc
+    intdir="$sar_date"
+    geodir="geo_${sar_date_short}"
+  else
     echo "SarDir2=$sar_date" >> $roipac_proc
-    intdir=${intdir}_$sar_date
+    intdir=${intdir}-${sar_date}
     geodir=${geodir}-${sar_date_short}
   fi
-done
+done 
 
 ciop-log "INFO" "Conversion of SAR pair to RAW completed"
 
