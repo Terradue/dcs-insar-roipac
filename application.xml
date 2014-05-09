@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="us-ascii"?>
-<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="roipac">
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="srtmdem">
   <jobTemplates>
     <jobTemplate id="echo">
-      <streamingExecutable>/application/echo/run.sh</streamingExecutable>
+      <streamingExecutable>/application/aux/run.sh</streamingExecutable>
       <defaultParameters>
       	<parameter id="aux_catalogue">http://catalogue.terradue.int/catalogue/search</parameter>
       </defaultParameters>
@@ -11,7 +11,6 @@
       </defaultJobconf>
     </jobTemplate>
     <jobTemplate id="dem" jobType="wps_client">
-      <streamingExecutable>/application/dem/run.sh</streamingExecutable>
         <defaultParameters />
         <defaultJobconf>
           <property id="ogc.wps.access.point">http://10.16.10.23:8080/wps/WebProcessingService</property>
