@@ -19,6 +19,7 @@ local msg=""
 case "$retval" in
 $SUCCESS) msg="Processing successfully concluded";;
 $ERR_AUX) msg="Failed to retrieve auxiliary products";;
+$ERR_VOR) msg="Failed to retrieve orbital data";;
 $ERR_INVALIDFORMAT) msg="Invalid format must be roi_pac or gamma";;
 $ERR_NOIDENTIFIER) msg="Could not retrieve the dataset identifier";;
 $ERR_NODEM) msg="DEM not generated";;
@@ -33,6 +34,7 @@ trap cleanExit EXIT
 UUIDTMP="/tmp/`uuidgen`"
 ln -s $TMPDIR $UUIDTMP
 
+export TMPDIR=$UUIDTMP
 #export TMPDIR=/tmp/wd2
 
 # prepare ROI_PAC environment variables
@@ -96,10 +98,11 @@ dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
 roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
 # get all SAR products
-for input in `cat $TMPDIR/input | grep sar` 
+
+for input in `cat $TMPDIR/input | grep sar`
 do
-  sar_url=`echo $input | cut -d "=" -f 2`
-  ciop-log "INFO" "SAR URL = $sar_url"
+sar_url=`echo $input | cut -d "=" -f 2`
+
   # get the date in format YYMMDD
   sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
   sar_date_short=`echo $sar_date | cut -c 1-4`
@@ -109,7 +112,7 @@ do
   sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
   ciop-log "INFO" "SAR identifier: $sar_identifier"
 
-  sar_folder=$TMPDIR/workdir/$sar_date 
+  sar_folder=$TMPDIR/workdir/$sar_date
   mkdir -p $sar_folder
   
   # get ASAR products
@@ -117,19 +120,19 @@ do
 
   cd $sar_folder
   ciop-log "DEBUG" "make_raw_envi.pl $sar_identifier DOR $sar_date"
-  make_raw_envi.pl $sar_identifier DOR $sar_date 1>&2 
+  make_raw_envi.pl $sar_identifier DOR $sar_date 1>&2
 
   if [ ! -e "$roipac_proc" ]
-  then 
-    echo "SarDir1=$sar_date" > $roipac_proc 
-    intdir="int_$sar_date"
-    geodir="geo_$sar_date_short"
-  else    
+  then
+    echo "SarDir1=$sar_date" > $roipac_proc
+    intdir="$sar_date"
+    geodir="geo_${sar_date_short}"
+  else
     echo "SarDir2=$sar_date" >> $roipac_proc
-    intdir=${intdir}_$sar_date
+    intdir=${intdir}-${sar_date}
     geodir=${geodir}-${sar_date_short}
   fi
-done
+done 
 
 ciop-log "INFO" "Conversion of SAR pair to RAW completed"
 
