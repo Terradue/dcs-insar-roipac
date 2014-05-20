@@ -1,7 +1,7 @@
 Cloud processing with Envisat ASAR data and ROI_PAC
 =
 
-<a href="https://zenodo.org/record/10015#.U3unfy-T4jU"><img src="https://zenodo.org/badge/doi/10.5281/zenodo.10015.png"></a>
+<a href="http://dx.doi.org/10.5281/zenodo.10015"><img src="https://zenodo.org/badge/doi/10.5281/zenodo.10015.png"></a>
 
 This repository contains the application files and scripts to process a pair of Envisat ASAR data with ROI\_PAC (Repeat Orbit Interferometry PACkage), a software package created by the Jet Propulsion Laboratory division of NASA and CalTech for processing SAR images to create InSAR images, named interferograms. Read more about ROI\_PAC on  [Wikipedia](http://en.wikipedia.org/wiki/ROI_PAC).
 
