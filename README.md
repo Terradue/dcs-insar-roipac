@@ -3,14 +3,15 @@ Cloud processing with Envisat ASAR data and ROI_PAC
 
 <a href="http://dx.doi.org/10.5281/zenodo.10015"><img src="https://zenodo.org/badge/doi/10.5281/zenodo.10015.png"></a>
 
-This repository contains the application files and scripts to process a pair of Envisat ASAR data with ROI\_PAC (Repeat Orbit Interferometry PACkage), a software package created by the Jet Propulsion Laboratory division of NASA and CalTech for processing SAR images to create InSAR images, named interferograms. Read more about ROI\_PAC on  [Wikipedia](http://en.wikipedia.org/wiki/ROI_PAC).
+This repository contains the application files and scripts to process a pair of Envisat ASAR data with ROI\_PAC (Repeat Orbit Interferometry PACkage), a software package created by the Jet Propulsion Laboratory division of NASA and CalTech for processing SAR images to create InSAR (Interferometric synthetic aperture radar) images, named interferograms. This geodetic method uses two or more synthetic aperture radar (SAR) images to generate maps of surface deformation or digital elevation, using differences in the phase of the waves returning to the satellite or aircraft. The technique can potentially measure centimetre-scale changes in deformation over spans of days to years. It has applications for geophysical monitoring of natural hazards, for example earthquakes, volcanoes and landslides, and in structural engineering, in particular monitoring of subsidence and structural stability.
 
-To run this application, you will need a Developer Cloud Sandbox that can be either requested from the ESA research & service support Portal (http://eogrid.esrin.esa.int/cloudtoolbox/) for ESA G-POD related projects and ESA registered user accounts, or directly from Terradue's Portal (http://www.terradue.com/partners), provided user registration approval. 
+To run this application, you will need a Developer Cloud Sandbox that can be either requested from the ESA [Research & Service Support Portal](http://eogrid.esrin.esa.int/cloudtoolbox/) for ESA G-POD related projects and ESA registered user accounts, or directly from Terradue's [Portal](http://www.terradue.com/partners), provided user registration approval. 
 
 A Developer Cloud Sandbox provides Earth Science data access services, and assistance tools for a user to implement, test and validate his application.
-It runs in two different lifecycle modes: sandbox mode and cluster mode. 
+It runs in two different lifecycle modes: Sandbox mode and Cluster mode. 
 Used in Sandbox mode (single virtual machine), it supports cluster simulation and user assistance functions in building the distributed application.
 Used in Cluster mode (collections of virtual machines), it supports the deployment and execution of the application with the power of distributed computing processing over large datasets (leveraging the Hadoop Streaming MapReduce technology). 
+
 
 ### Installation
 
@@ -118,13 +119,17 @@ Using HTTP POST request with `curl`
 
 TBW
 
-### Learn more about running ROI_PAC on a Sandbox
+### Learn more
 
-[ROI\_PAC on a Sandbox wiki](https://github.com/Terradue/roi_pac/wiki)
+* How to run a [ROI\_PAC on a Sandbox wiki](https://github.com/Terradue/roi_pac/wiki)
+* About ROI\_PAC software on [calTech Wiki](http://roipac.org/cgi-bin/moin.cgi), [Open Channel Foundation](http://www.openchannelfoundation.com/projects/ROI_PAC/index.html), [Cornell University](http://www.geo.cornell.edu/eas/PeoplePlaces/Faculty/matt/roi_pac.html/) and the [Georgia Institute of Technology guide](http://shadow.eas.gatech.edu/~anewman/classes/MGM/InSAR/index.html)
+
 
 ### References
 
 * [Developer Cloud Sandbox](https://support.terradue.com/projects/devel-cloud-sb/wiki)
 * [ESA Virtual Archive - access SAR data](http://eo-virtual-archive4.esa.int/)
-* [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
 * [SSEP CloudToolbox](http://eogrid.esrin.esa.int/cloudtoolbox/) to request a Developer Cloud Sandbox PaaS and run this application
+* [ROI_PAC Web Site](http://www.roipac.org/ROI_PAC)
+* [Wikipedia](http://en.wikipedia.org/wiki/ROI_PAC).
+
