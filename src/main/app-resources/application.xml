@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="srtmdem">
   <jobTemplates>
-    <jobTemplate id="echo">
+    <jobTemplate id="aux">
       <streamingExecutable>/application/aux/run.sh</streamingExecutable>
       <defaultParameters>
       	<parameter id="aux_catalogue">http://catalogue.terradue.int/catalogue/search</parameter>
@@ -33,10 +33,10 @@
   </jobTemplates>
   <workflow id="roi_pac" title="ROI_PAC on a sandbox" abstract="This application invokes ROI_PAC on Envisat ASAR data">
     <workflowVersion>1.0</workflowVersion>
-    <node id="node_echo">
-      <job id="echo" />
+    <node id="node_aux">
+      <job id="aux" />
       <sources>
-        <source id="slave" title="ASAR slave product catalogue entry in RDF format" abstract="ASAR slave product passed by reference to catalogue entries in RDF format" refid="string:list">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf,http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf</source>
+        <source id="slave" title="ASAR slave product catalogue entry in RDF format" abstract="ASAR slave product passed by reference to catalogue entries in RDF format" refid="string:list"/>
       </sources>
       <parameters />
     </node>
