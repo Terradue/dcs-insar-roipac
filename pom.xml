@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.terradue.ciop.app</groupId>
@@ -8,13 +7,13 @@
 	<packaging>rpm</packaging>
 	<name>InSAR-ROI_PAC</name>
 	<description>InSAR-ROI_PAC</description>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.4</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</connection>
 		<developerConnection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</developerConnection>
 		<url>https://github.com/Terradue/InSAR-ROI_PAC</url>
-		<tag>HEAD</tag>
+		<tag>v0.4</tag>
 	</scm>
 	
 	<properties>
@@ -145,8 +144,7 @@
 						<phase>install</phase>
 						<configuration>
 							<target>
-								<chmod dir="/application" includes="**/bin/*, **/run*"
-									perm="755" />
+								<chmod dir="/application" includes="**/bin/*, **/run*" perm="755" />
 							</target>
 						</configuration>
 						<goals>
