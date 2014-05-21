@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.terradue.ciop.app</groupId>
+	<artifactId>insar-roi_pac</artifactId>
+	<packaging>rpm</packaging>
+	<name>InSAR-ROI_PAC</name>
+	<description>InSAR-ROI_PAC</description>
+	<version>0.1-SNAPSHOT</version>
+
+	<scm>
+		<connection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</connection>
+		<developerConnection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</developerConnection>
+		<url>https://github.com/Terradue/InSAR-ROI_PAC</url>
+		<tag>HEAD</tag>
+	</scm>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+	
+	<repositories>
+		<repository>
+			<id>repository.terradue.com</id>
+			<name>repository.terradue.com-releases</name>
+			<url>http://repository.terradue.com/artifactory/libs-release-public</url>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>/application</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-app-resources</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>/application</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/app-resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<copyright>${project.inceptionYear}, Terradue, GPL</copyright>
+					<distribution>Terradue ${project.inceptionYear}</distribution>
+					<group>air</group>
+					<packager>Terradue</packager>
+					<name>${project.artifactId}</name>
+					<defaultDirmode>775</defaultDirmode>
+					<defaultFilemode>664</defaultFilemode>
+					<defaultUsername>root</defaultUsername>
+					<defaultGroupname>ciop</defaultGroupname>
+					<prefix>/application</prefix>
+					<autoRequires>true</autoRequires>
+					<mappings>
+						<mapping>
+							<directory>/application</directory>
+							<sources>
+								<source>
+									<location>${basedir}/src/main/app-resources</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/application</directory>
+							<sources>
+								<source>
+									<location>${basedir}/src/main/app-resources</location>
+									<includes>
+										<include>**/run</include>
+										<include>**/run.R</include>
+										<include>**/bin/*</include>
+										<include>**/*.sh</include>
+										<include>**/libexec/*</include>
+									</includes>
+								</source>
+							</sources>
+							<filemode>775</filemode>
+						</mapping>
+					</mappings>
+
+					<provides>
+						<provide>${project.artifactId}</provide>
+					</provides>
+					<needarch>noarch</needarch>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>change perm</id>
+						<phase>install</phase>
+						<configuration>
+							<target>
+								<chmod dir="/application" includes="**/bin/*, **/run*"
+									perm="755" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>1.9</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>de.jutzig</groupId>
+				<artifactId>github-release-plugin</artifactId>
+				<version>1.0.3</version>
+				<executions>
+					<execution>
+						<id>github-upload</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>release</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<releaseName>v${project.version}</releaseName>
+							<tag>v${project.version}</tag>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>de.jutzig</groupId>
+							<artifactId>github-release-plugin</artifactId>
+							<version>1.0.3</version>
+							<configuration>
+								<artifact>${project.build.directory}/rpm/${project.artifactId}/RPMS/noarch/${project.artifactId}-${DYNAMIC.CBUILDPROP.RPM.VERSION}-${DYNAMIC.CBUILDPROP.RPM.RELEASE}.${DYNAMIC.CBUILDPROP.OS}.noarch.rpm</artifact>
+								<overwriteArtifact>true</overwriteArtifact>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
+
