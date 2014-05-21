@@ -35,13 +35,16 @@ cd InSAR-ROI_PAC
 mvn install
 ```
 
-### Submitting the workflow
+### Submitting the processing
 
-Run this command in a shell:
+Invoke the application via its OGC Web Processing Service interface via:
 
-```bash
-ciop-simwf
-```
+* the sandbox dashboard
+* the Browser with a GET request to the WPS access point
+* a POST request to the WPS access point
+
+Learn more: [Submitting an application via the WPS interface](http://docs.terradue.com/developer/faq/wps) 
+
 
 ### Community and Documentation
 
