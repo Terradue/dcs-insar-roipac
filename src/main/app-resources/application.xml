@@ -36,14 +36,14 @@
     <node id="node_echo">
       <job id="echo" />
       <sources>
-        <source id="dataset" title="ASAR product catalogue entry in RDF format" abstract="Define the list of two ASAR products to generate a DEM for each input product. The products are passed by references to catalogue entries in RDF format" refid="string:list">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf,http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf</source>
+        <source id="slave" title="ASAR slave product catalogue entry in RDF format" abstract="ASAR slave product passed by reference to catalogue entries in RDF format" refid="string:list">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf,http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf</source>
       </sources>
       <parameters />
     </node>
     <node id="node_dem">
       <job id="dem" />
       <sources>
-        <source id="Level0_ref" title="ASAR product catalogue entry in RDF format" abstract="Define the list of two ASAR products to generate a DEM for each input product. The products are passed by references to catalogue entries in RDF format" refid="string:list" scope="runtime"/>
+        <source id="Level0_ref" title="ASAR master product catalogue entry in RDF format" abstract="ASAR slave product passed by reference to catalogue entries in RDF format" refid="string:list" scope="runtime"/>
       </sources>
       <parameters />
     </node>
