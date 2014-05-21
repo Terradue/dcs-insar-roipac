@@ -8,7 +8,7 @@
 	<packaging>rpm</packaging>
 	<name>InSAR-ROI_PAC</name>
 	<description>InSAR-ROI_PAC</description>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</connection>
@@ -16,14 +16,14 @@
 		<url>https://github.com/Terradue/InSAR-ROI_PAC</url>
 		<tag>HEAD</tag>
 	</scm>
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
-
+	
 	<repositories>
 		<repository>
 			<id>repository.terradue.com</id>
@@ -101,7 +101,6 @@
 					<defaultGroupname>ciop</defaultGroupname>
 					<prefix>/application</prefix>
 					<autoRequires>true</autoRequires>
-					<release>ciop</release>
 					<mappings>
 						<mapping>
 							<directory>/application</directory>
@@ -203,7 +202,7 @@
 							<artifactId>github-release-plugin</artifactId>
 							<version>1.0.3</version>
 							<configuration>
-								<artifact>${project.build.directory}/rpm/${project.artifactId}/RPMS/noarch/${project.artifactId}-${project.version}-ciop.noarch.rpm</artifact>
+								<artifact>${project.build.directory}/rpm/${project.artifactId}/RPMS/noarch/${project.artifactId}-${DYNAMIC.CBUILDPROP.RPM.VERSION}-${DYNAMIC.CBUILDPROP.RPM.RELEASE}.${DYNAMIC.CBUILDPROP.OS}.noarch.rpm</artifact>
 								<overwriteArtifact>true</overwriteArtifact>
 							</configuration>
 						</plugin>
