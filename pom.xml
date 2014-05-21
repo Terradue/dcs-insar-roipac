@@ -17,18 +17,6 @@
 		<tag>HEAD</tag>
 	</scm>
 
-	<repositories>
-		<repository>
-			<id>repository.terradue.com</id>
-			<name>repository.terradue.com-releases</name>
-			<url>http://repository.terradue.com/artifactory/libs-release-public</url>
-			<releases>
-				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-		</repository>
-	</repositories>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
