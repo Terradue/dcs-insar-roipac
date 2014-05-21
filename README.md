@@ -51,7 +51,7 @@ Learn more: [Submitting an application via the WPS interface](http://docs.terrad
 To learn more and find information go to 
 
 * [Developer Cloud Sandbox](http://docs.terradue.com/developer) service 
-* [InSAR ROI_PAC](http://docs.terradue.com/developer/field/insar/tp_roi_pac) 
+* [InSAR ROI_PAC](http://docs.terradue.com/developer/field/insar/tp_roi_pac) field guide chapter
 
 ### Authors (alphabetically)
 
