@@ -8,7 +8,7 @@ source ${ciop_job_include}
 SUCCESS=0
 ERR_AUX=2
 ERR_VOR=4
-export HOME=/tmp
+#export HOME=/tmp
 # add a trap to exit gracefully
 function cleanExit ()
 {
@@ -41,6 +41,7 @@ function getAUXref() {
 
   opensearch-client -v -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods
 }
+
 
 
 while read input
