@@ -7,7 +7,7 @@
       	<parameter id="aux_catalogue">http://catalogue.terradue.int/catalogue/search</parameter>
       </defaultParameters>
       <defaultJobconf>
-	<property id="ciop.job.max.tasks">1</property>	      
+	<property id="ciop.job.max.tasks">1</property>
       </defaultJobconf>
     </jobTemplate>
     <jobTemplate id="dem" jobType="wps_client">
@@ -20,7 +20,7 @@
           <property id="mapred.task.timeout">9900000000</property>
           <property id="ciop.job.max.tasks">1</property>
         </defaultJobconf>
-    </jobTemplate> 
+    </jobTemplate>
     <jobTemplate id="roipac">
       <streamingExecutable>/application/roipac/run.sh</streamingExecutable>
       <defaultParameters>
