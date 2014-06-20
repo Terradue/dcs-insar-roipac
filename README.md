@@ -53,12 +53,12 @@ To learn more and find information go to
 * [Developer Cloud Sandbox](http://docs.terradue.com/developer) service 
 * [InSAR ROI_PAC](http://docs.terradue.com/developer/field/insar/tp_roi_pac) field guide chapter
 
-### Authors (alphabetically)
+### Authors
 
-* Emmannuel Mathot
 * Fabio D'Andria
-* Fabrice Brito
 * Francesco Barchetta
+* Fabrice Brito
+* Emmannuel Mathot
 
 ### License
 
