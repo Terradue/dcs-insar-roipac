@@ -53,14 +53,14 @@ To learn more and find information go to
 * [Developer Cloud Sandbox](http://docs.terradue.com/developer) service 
 * [InSAR ROI_PAC](http://docs.terradue.com/developer/field/insar/tp_roi_pac) field guide chapter
 
-### Authors
+### Authors of this tutorial
 
 * Fabio D'Andria
 * Francesco Barchetta
 * Fabrice Brito
 * Emmannuel Mathot
 
-### License
+### License for this tutorial
 
 Copyright 2014 Terradue Srl
 
