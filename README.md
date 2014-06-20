@@ -20,7 +20,7 @@ Log on your Developer Cloud Sandbox host.
 
 Install ROI_PAC using the 'yum' command. ROI-PAC is a software package available through Terradue's Cloud Platform software repository.
 
-> ROI_PAC is a copyrighted software that requires a license. Licenses are available at no charge for non-commercial use from the [Open Channel Foundation](http://www.openchannelfoundation.org/projects/ROI_PAC). Comply with the ROI\_PAC license by registering and getting your copy of ROI_PAC.
+> ROI_PAC is a copyrighted software that requires a license. Licenses are available at no charge for non-commercial use from the [Open Channel Foundation](http://www.openchannelfoundation.org/projects/ROI_PAC). Read the [license terms](http://www.openchannelfoundation.org/project/print_license.php?group_id=282&license_id=61).
 
 ```
 sudo yum install roi_pac.x86_64
