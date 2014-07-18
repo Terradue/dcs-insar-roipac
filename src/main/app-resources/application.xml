@@ -52,7 +52,7 @@
       <job id="roipac" />
       <sources>
         <source refid="wf:node">node_dem</source>
-        <source refid="wf:node">node_echo</source>
+        <source refid="wf:node">node_aux</source>
       </sources>
       <parameters />
     </node>
