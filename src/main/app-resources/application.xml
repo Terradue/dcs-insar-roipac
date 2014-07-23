@@ -14,7 +14,7 @@
     <jobTemplate id="dem" jobType="wps_client">
         <defaultParameters />
         <defaultJobconf>
-          <property id="ogc.wps.access.point">http://10.16.10.23:8080/wps/WebProcessingService</property>
+          <property id="ogc.wps.access.point">http://dem.terradue.int:8080/wps/WebProcessingService</property>
           <property id="ogc.wps.process.identifier">com.terradue.wps_oozie.process.OozieAbstractAlgorithm</property>
           <property id="ogc.wps.storeExecuteResponse">true</property>
           <property id="ogc.wps.status">true</property>
