@@ -55,10 +55,11 @@ To learn more and find information go to
 
 ### Authors of this tutorial
 
-* Fabio D'Andria
 * Francesco Barchetta
 * Fabrice Brito
+* Fabio D'Andria
 * Emmannuel Mathot
+* Cesare Rossi
 
 ### License for this tutorial
 
