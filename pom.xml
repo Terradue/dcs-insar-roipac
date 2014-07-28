@@ -7,7 +7,7 @@
 	<packaging>rpm</packaging>
 	<name>InSAR-ROI_PAC</name>
 	<description>InSAR-ROI_PAC</description>
-	<version>0.6-SNAPSHOT</version>
+	<version>0.7-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</connection>
@@ -196,7 +196,7 @@
 						<configuration>
 							<releaseName>v${project.version}</releaseName>
 							<tag>v${project.version}</tag>
-							<artifact>${project.build.directory}/rpm/${project.artifactId}/RPMS/noarch/${project.artifactId}-${project.version}-ciop.noarch.rpm</artifact>
+							<artifact>${project.build.directory}/rpm/${project.artifactId}/RPMS/noarch/${project.artifactId}-${parsedVersion.majorVersion}.${parsedVersion.minorVersion}-ciop.noarch.rpm</artifact>
 							<overwriteArtifact>true</overwriteArtifact>
 						</configuration>
 					</execution>
