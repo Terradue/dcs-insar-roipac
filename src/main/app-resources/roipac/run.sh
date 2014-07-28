@@ -35,7 +35,6 @@ UUIDTMP="/tmp/`uuidgen`"
 ln -s $TMPDIR $UUIDTMP
 
 export TMPDIR=$UUIDTMP
-#export TMPDIR=/tmp/wd2
 
 # prepare ROI_PAC environment variables
 export INT_BIN=/usr/bin/
@@ -51,7 +50,7 @@ cat > $TMPDIR/input
 # retrieve the aux files
 
 mkdir -p $TMPDIR/aux
-for input in `cat $TMPDIR/input | grep aux` 
+for input in `cat $TMPDIR/input | grep 'aux='` 
 do
   echo ${input#aux=} | ciop-copy -O $TMPDIR/aux -
 
@@ -62,7 +61,7 @@ done
 
 # retrieve the orbit data
 mkdir -p $TMPDIR/vor
-for input in `cat $TMPDIR/input | grep vor` 
+for input in `cat $TMPDIR/input | grep 'vor='` 
 do
   echo ${input#vor=} | ciop-copy -O $TMPDIR/vor -
 
@@ -76,7 +75,8 @@ mkdir -p $TMPDIR/workdir/dem
 
 cat $TMPDIR/input
 ciop-log "INFO" "PAUSE"
-dem_wps_result_xml=`cat $TMPDIR/input | egrep -v '(aux|vor|sar)'`
+
+dem_wps_result_xml=`cat $TMPDIR/input | egrep -v '(aux=|vor=|sar=)'`
 
 # extract the result URL
 ciop-log "INFO" "ciop-copy $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz"
@@ -99,9 +99,9 @@ roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
 # get all SAR products
 
-for input in `cat $TMPDIR/input | grep sar`
+for input in `cat $TMPDIR/input | grep 'sar='`
 do
-sar_url=`echo $input | cut -d "=" -f 2`
+  sar_url=`echo $input | cut -d "=" -f 2`
 
   # get the date in format YYMMDD
   sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
