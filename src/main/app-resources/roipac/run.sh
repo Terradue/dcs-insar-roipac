@@ -189,7 +189,7 @@ ciop-log "INFO" "Geocoding the interferogram"
 geocode.pl geomap_4rlks.trans $intdir.int geo_${intdir}.int
 
 ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"
-/usr/local/bin/roipac2grdfile -t real -i geo_${intdir}.int -r geo_${intdir}.int.rsc -o geo_${intdir}.int.nc
+/usr/bin/roipac2grdfile -t real -i geo_${intdir}.int -r geo_${intdir}.int.rsc -o geo_${intdir}.int.nc
 
 gdal_translate NETCDF:"geo_${intdir}.int.nc":phase geo_${intdir}.int.phase.tif
 gdal_translate NETCDF:"geo_${intdir}.int.nc":magnitude geo_${intdir}.int.magnitude.tif
