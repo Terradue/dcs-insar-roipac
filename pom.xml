@@ -145,6 +145,10 @@
 					<provides>
 						<provide>${project.artifactId}</provide>
 					</provides>
+					<requires>
+						<require>roi_pac</require>
+						<require>roi_pac-grdfile</require>
+					</requires>
 					<needarch>noarch</needarch>
 				</configuration>
 			</plugin>
