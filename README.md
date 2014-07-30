@@ -23,7 +23,7 @@ Install ROI_PAC using the 'yum' command. ROI-PAC is a software package available
 > ROI_PAC is a copyrighted software that requires a license. Licenses are available at no charge for non-commercial use from the [Open Channel Foundation](http://www.openchannelfoundation.org/projects/ROI_PAC). Read the [license terms](http://www.openchannelfoundation.org/project/print_license.php?group_id=282&license_id=61).
 
 ```
-sudo yum install roi_pac.x86_64
+sudo yum install roi_pac.x86_64 roi_pac-grdfile.x86_64 
 ```
 
 Run these commands in a shell:
@@ -58,7 +58,7 @@ To learn more and find information go to
 * Francesco Barchetta
 * Fabrice Brito
 * Fabio D'Andria
-* Emmannuel Mathot
+* Emmanuel Mathot
 * Cesare Rossi
 
 ### License for this tutorial
