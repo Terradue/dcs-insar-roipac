@@ -39,7 +39,7 @@ function getAUXref() {
   ciop-log "INFO" "stopdate is $stopdate"
   ciop-log "INFO" "opensearch-client -f Rdf -p time:start=$startdate -p time:end=$stopdate $ods"
 
-  opensearch-client -v -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods
+  opensearch-client -v -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods | head -n1
 }
 
 
