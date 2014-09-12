@@ -33,13 +33,13 @@ function getAUXref() {
   local ods=$2
   ciop-log "INFO" "rdf is $rdf"
   ciop-log "INFO" "ods is $ods" 
-  startdate="`ciop-casmeta -f "ical:dtstart" $rdf | tr -d "Z"`"
-  stopdate="`ciop-casmeta -f "ical:dtend" $rdf | tr -d "Z"`"
+  startdate="`ciop-casmeta -f "ical:dtstart" "$rdf" | tr -d "Z"`"
+  stopdate="`ciop-casmeta -f "ical:dtend" "$rdf" | tr -d "Z"`"
   ciop-log "INFO" "startdate is $startdate"
   ciop-log "INFO" "stopdate is $stopdate"
   ciop-log "INFO" "opensearch-client -f Rdf -p time:start=$startdate -p time:end=$stopdate $ods"
 
-  opensearch-client -v -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods | head -n1
+  opensearch-client -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods | head -n1
 }
 
 
@@ -66,7 +66,7 @@ do
 	ref=`getAUXref $input $cat_osd_root/DOR_VOR_AX/description`
 		
 	#pass the aux reference to the next node
-	[ "$ref" != "" ] && echo "vor=$ref" | ciop-publish -s || exit $ERR_VOR
+	[ "$ref" != "" ] && echo "vor=$ref" | ciop-publish -s #|| exit $ERR_VOR
 		
 	# pass the SAR reference to the next node
 	echo "sar=$input" | ciop-publish -s

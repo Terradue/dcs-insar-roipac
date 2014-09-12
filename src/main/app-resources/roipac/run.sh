@@ -88,7 +88,7 @@ tgz_metalink=`tail --bytes=+3 $wps_result | xsltproc /application/roipac/xslt/ge
 
 curl -L -s $tgz_metalink | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
 
-mkdir $TMPDIR/workdir/dem/
+mkdir -p $TMPDIR/workdir/dem/
 
 tar xzf $TMPDIR/workdir/dem/dem.tgz -C $TMPDIR/workdir/dem/ 
 
@@ -101,22 +101,22 @@ roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
 for input in `cat $TMPDIR/input | grep 'sar='`
 do
-  sar_url=`echo $input | cut -d "=" -f 2`
+  sar_url=`echo "$input" | cut -d "=" -f 2-`
 
   # get the date in format YYMMDD
-  sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
+  sar_date=`ciop-casmeta -f "ical:dtstart" "$sar_url" | cut -c 3-10 | tr -d "-"`
   sar_date_short=`echo $sar_date | cut -c 1-4`
   ciop-log "INFO" "SAR date: $sar_date and $sar_date_short"
 
   # get the dataset identifier
-  sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
+  sar_identifier=`ciop-casmeta -f "dc:identifier" "$sar_url"`
   ciop-log "INFO" "SAR identifier: $sar_identifier"
 
   sar_folder=$TMPDIR/workdir/$sar_date
   mkdir -p $sar_folder
   
   # get ASAR products
-  sar="`ciop-copy -o $sar_folder $sar_url`"
+  sar="`opensearch-client "$sar_url" enclosure | ciop-copy -o $sar_folder -`"
 
   cd $sar_folder
   ciop-log "DEBUG" "make_raw_envi.pl $sar_identifier DOR $sar_date"
