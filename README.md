@@ -11,8 +11,8 @@ To run this application you will need a Developer Cloud Sandbox, that can be eit
 
 A Developer Cloud Sandbox provides Earth Sciences data access services, and helper tools for a user to implement, test and validate a scalable data processing application. It offers a dedicated virtual machine and a Cloud Computing environment.
 The virtual machine runs in two different lifecycle modes: Sandbox mode and Cluster mode. 
-Used in Sandbox mode (single virtual machine), it supports cluster simulation and user assistance functions in building the distributed application.
-Used in Cluster mode (a set of master and slave nodes), it supports the deployment and execution of the application with the power of distributed computing for data processing over large datasets (leveraging the Hadoop Streaming MapReduce technology). 
+Used in Sandbox mode (single virtual machine), it supports cluster simulation and provides user assistance functions in building the distributed application.
+Used in Cluster mode (a set of master and slaves nodes), it supports the deployment and execution of the application with the power of distributed computing for data processing over large datasets (leveraging the Hadoop Streaming MapReduce technology). 
 
 ### Installation 
 
@@ -39,18 +39,18 @@ mvn install
 
 Invoke the application via its OGC Web Processing Service interface via:
 
-* the sandbox dashboard
-* the Browser with a GET request to the WPS access point
+* the WPS client in your sandbox's dashboard
+* your Browser, with a GET request to the WPS access point
 * a POST request to the WPS access point
 
-Learn more: [Submitting an application via the WPS interface](http://docs.terradue.com/developer/faq/wps) 
+Learn more: [Submitting an application via the WPS interface](http://docs.terradue.com/developer-sandbox/faq) 
 
 
 ### Community and Documentation
 
 To learn more and find information go to 
 
-* [Developer Cloud Sandbox](http://docs.terradue.com/developer) service 
+* [Developer Cloud Sandboxes](http://docs.terradue.com/developer-sandbox) service documentation
 * [InSAR ROI_PAC](http://docs.terradue.com/developer/field/insar/tp_roi_pac) field guide chapter
 
 ### Authors of this tutorial
