@@ -35,11 +35,11 @@ cd InSAR-ROI_PAC
 mvn install
 ```
 
-### Submitting the processing
+### Submitting the processing request
 
-Invoke the application via its OGC Web Processing Service interface via:
+Invoke the ROI_PAC processing via the Cloud Sandbox's embedded OGC Web Processing Service (WPS) interface, using either:
 
-* the WPS client in your sandbox's dashboard
+* the WPS client in your Cloud Sandbox's [dashboard](http://docs.terradue.com/developer-sandbox/start/discover.html#user-dashboard-web-ui)
 * your Browser, with a GET request to the WPS access point
 * a POST request to the WPS access point
 
