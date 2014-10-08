@@ -43,7 +43,7 @@ Invoke the ROI_PAC processing via the Cloud Sandbox's embedded OGC Web Processin
 * your Browser, with a GET request to the WPS access point
 * a POST request to the WPS access point
 
-Learn more: [Submitting an application via the WPS interface](http://docs.terradue.com/developer-sandbox/faq) 
+Learn more: [Submit a processing request via the OGC WPS interface](http://docs.terradue.com/developer-sandbox/faq) 
 
 
 ### Community and Documentation
