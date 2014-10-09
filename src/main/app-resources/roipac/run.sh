@@ -126,10 +126,13 @@ do
   then
     echo "SarDir1=$sar_date" > $roipac_proc
     intdir="$sar_date"
+    sar1="$sar_date"
     geodir="geo_${sar_date_short}"
   else
     echo "SarDir2=$sar_date" >> $roipac_proc
     intdir=${intdir}-${sar_date}
+    sar2="$sar_date"
+    base=${sar1}_${sar2}
     geodir=${geodir}-${sar_date_short}
   fi
 done 
@@ -185,20 +188,25 @@ res=$?
 
 cd int_${intdir}
 
-ciop-log "INFO" "Geocoding the interferogram"
-geocode.pl geomap_4rlks.trans $intdir.int geo_${intdir}.int
+ciop-log "INFO" "Geocoding the wrapped interferogram"
+cpx2rmg.pl  filt_${intdir}-sim_HDR_4rlks.int  filt_${intdir}-sim_HDR_4rlks.int.hgt
+geocode.pl geomap_4rlks.trans filt_${intdir}-sim_HDR_4rlks.int.hgt geo_${intdir}.int
 
 ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"
 /usr/bin/roipac2grdfile -t real -i geo_${intdir}.int -r geo_${intdir}.int.rsc -o geo_${intdir}.int.nc
+/usr/bin/roipac2grdfile -t real -i geo_${intdir}.unw -r geo_${intdir}.unw.rsc -o geo_${intdir}.unw.nc
 
 gdal_translate NETCDF:"geo_${intdir}.int.nc":phase geo_${intdir}.int.phase.tif
 gdal_translate NETCDF:"geo_${intdir}.int.nc":magnitude geo_${intdir}.int.magnitude.tif
+gdal_translate NETCDF:"geo_${intdir}.unw.nc":phase geo_${intdir}.unw.phase.tif
 
 ciop-log "INFO" "Publishing results"
 
+ciop-publish -m $TMPDIR/workdir/*.proc
+
 ciop-log "INFO" "Publishing baseline file"
 
-ciop-publish -m $TMPDIR/workdir/int_${intdir}/${intdir}_baseline.rsc
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/*_baseline.rsc
 
 ciop-log "INFO" "Publishing multi-look interferograms"
 
@@ -211,6 +219,12 @@ ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.int.rsc
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.unw
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/filt*${intdir}-sim*.unw.rsc
 
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.unw
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.unw.rsc
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/log
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/log1
+
 for file in `find . -name "${intdir}*.cor"`
 do
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/$file
@@ -220,6 +234,7 @@ done
 ciop-log "INFO" "Publishing tif files"
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.phase.tif
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.int.magnitude.tif
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.unw.phase.tif
 
 ciop-log "INFO" "Publishing full resolution interferogram"
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int
