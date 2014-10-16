@@ -64,4 +64,4 @@ The streaming executable implements the activities:
   
   stop
 
-The streaming executable source is available here: `/application/auxc/run.sh <https://github.com/Terradue/InSAR-ROI_PAC/blob/master/src/main/app-resources/aux/run.sh>`_
+The streaming executable source is available here: `/application/aux/run.sh <https://github.com/Terradue/InSAR-ROI_PAC/blob/master/src/main/app-resources/aux/run.sh>`_
