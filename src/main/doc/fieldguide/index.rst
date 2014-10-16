@@ -5,7 +5,7 @@ This application processes a pair of Envisat ASAR data with ROI_PAC (Repeat Orbi
 
 Read more about `ROI_PAC on Wikipedia <http://en.wikipedia.org/wiki/ROI_PAC>`_.
 
-This filed guide has a two-fold objective:
+This field guide has a two-fold objective:
 
 * Implement a Web Processing Service to generate an interferogram using ROI_PAC:
 
@@ -13,21 +13,21 @@ This filed guide has a two-fold objective:
   * Get the Envisat ASAR auxiliary and orbital data
   * Generate the interferogram
 
-* Demonstrate how to use an external WPS service:
+* Demonstrate how to use an external WPS service within a workflow:
 
-  * The DEM generation is invoked as a node of the processing workflow 
+  * The DEM generation external WPS service is invoked as a node of the processing workflow 
 
 .. Contents:
 
 .. toctree::
    :maxdepth: 1
    
-..  What you will learn <learn>
-..  Addressing a scientific and processing goal <goal>
-..  Rationales for the processing chain <rational>
-..  Data preparation <data>
-..  Workflow design <workflow>
-..  Processing nodes design <nodes>
-..  Application integration and testing <testing>
-..  Application exploitation <exploitation <exploitation>
-..  Going further <further>
+  What you will learn <learn>
+  Addressing a scientific and processing goal <goal>
+  Rationales for the processing chain <rational>
+  Data preparation <data>
+  Workflow design <workflow>
+  Processing nodes design <nodes>
+  Application integration and testing <testing>
+  Application exploitation <exploitation <exploitation>
+  Going further <further>
