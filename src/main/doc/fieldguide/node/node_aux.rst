@@ -12,11 +12,11 @@ The job template includes the path to the streaming executable.
   
 The job template defines a single parameter:
 
-+----------------+------------------------------------------------+--------------------------------------------------------------------------+
-| Parameter name | Default value                                  | Description                                                              | 
-+================+================================================+==========================================================================+
-| aux_catalogue  | http://catalogue.terradue.int/catalogue/search | URL to the OpenSearch catalogue containing the auxliary and orbital data | 
-+----------------+------------------------------------------------+--------------------------------------------------------------------------+
++----------------+------------------------------------------------+---------------------------------------------------------------------------+
+| Parameter name | Default value                                  | Description                                                               | 
++================+================================================+===========================================================================+
+| aux_catalogue  | http://catalogue.terradue.int/catalogue/search | URL to the OpenSearch catalogue containing the auxiliary and orbital data | 
++----------------+------------------------------------------------+---------------------------------------------------------------------------+
 
 which translates to:
 
