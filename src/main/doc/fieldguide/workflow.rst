@@ -17,15 +17,15 @@ Software and COTS
 ROI_PAC
 -------
 
-You will use the Repeat Orbit Interferometry PACkage (ROI_PAC)[#f1]_, software for processing synthetic aperture radar data to produce differential interferograms. Licenses available at no charge for non-commercial use. 
+You will use the Repeat Orbit Interferometry PACkage (ROI_PAC) [#f1]_, software for processing synthetic aperture radar data to produce differential interferograms. Licenses available at no charge for non-commercial use. 
 
 Workflow structure
 ------------------
 
 The workflow contains three processing steps to:
 
-* Retrieve the Envisat ASAR auxiliary products ( ) and orbital data ()
-* Retrieve a Digital Elevation Model (DEM) using STRM3 data over the area covered by one of the ASAR acquisitions (the DEM generation application is available at: https://github.com/Terradue/srtm-dem)
+* Retrieve the Envisat ASAR auxiliary products (ASA_CON_AX, ASA_INS_AX, ASA_XCA_AX, ASA_XCH_AX) and orbital data (DOR_VOR_AX)
+* Retrieve a Digital Elevation Model (DEM) using STRM3 [#f2]_ data over the area covered by one of the ASAR acquisitions (the DEM generation application is available at: https://github.com/Terradue/srtm-dem)
 * Invoke the make_raw_envi on each of the ASAR products; create the ROI_PAC proc file and invoke the process_2pass.pl
 
 .. uml::
@@ -41,6 +41,7 @@ The workflow contains three processing steps to:
 
   fork
     :node_aux;
+  fork again
     :node_dem;
   end fork
   
