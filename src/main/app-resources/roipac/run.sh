@@ -84,7 +84,7 @@ ciop-log "INFO" "ciop-copy $dem_wps_result_xml | xsltproc /application/roipac/xs
 wps_result=`ciop-copy $dem_wps_result_xml`
 
 # workaround for spurious bytes in the response 
-tgz_metalink=`tail --bytes=+3 $wps_result | xsltproc /application/roipac/xslt/getresult.xsl -`
+tgz_metalink=`cat $wps_result | xsltproc /application/roipac/xslt/getresult.xsl -`
 
 curl -L -s $tgz_metalink | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
 
