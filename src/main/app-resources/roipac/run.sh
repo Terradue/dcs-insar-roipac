@@ -71,8 +71,10 @@ done
 
 # retrieve the DEM
 mkdir -p $TMPDIR/workdir/dem
-wps_result="$( ciop-browseresults -r ${CIOP_WF_RUN_ID} -j node_dem -w | tr -d '\r' | tr -d '\n')"
-ciop-log "DEBUG" "dem wps results is ${wps_result}z"
+wps_result="$( ciop-browseresults -r ${CIOP_WF_RUN_ID} -j node_dem -w | tr -d '\r' | tr '\n' ';')"
+ciop-log "DEBUG" "dem wps results 1 is ${wps_result}"
+wps_result=`echo $wps_result | cut -d ";" -f 2`
+ciop-log "DEBUG" "dem wps results is ${wps_result}"
 
 # extract the result URL
 curl -L -o $TMPDIR/workdir/dem/dem.tgz "${wps_result}" 2> /dev/null
@@ -97,23 +99,28 @@ roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
 for input in `cat $TMPDIR/input | grep 'sar='`
 do
-    sar_url=`echo $input | cut -d "=" -f 2`
+    #sar_url=`echo $input | cut -d "=" -f 2`
+
+    sar_url=`echo $input | sed "s/^sar=//"`
 
     # get the date in format YYMMDD
-    sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
+    #sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
+    sar_date=`opensearch-client $sar_url startdate | cut -c 3-10 | tr -d "-"`
     sar_date_short=`echo $sar_date | cut -c 1-4`
   
     ciop-log "DEBUG" "SAR input ${sar_url}"
     ciop-log "INFO" "SAR date: $sar_date and $sar_date_short"
 
     # get the dataset identifier
-    sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
+#    sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
+    sar_identifier=`opensearch-client $sar_url identifier`
     ciop-log "INFO" "SAR identifier: $sar_identifier"
 
     sar_folder=$TMPDIR/workdir/$sar_date
     mkdir -p $sar_folder
   
     # get ASAR products
+    sar_url=`opensearch-client $sar_url enclosure`
     sar="`ciop-copy -o $sar_folder $sar_url`"
 
     cd $sar_folder
@@ -184,7 +191,7 @@ process_2pass.pl $roipac_proc 1>&2
 cd int_${intdir}
 
 ciop-log "INFO" "Geocoding the wrapped interferogram"
-cpx2rmg.pl  filt_${intdir}-sim_HDR_4rlks.int  filt_${intdir}-sim_HDR_4rlks.int.hgt
+cpx2rmg  filt_${intdir}-sim_HDR_4rlks.int  filt_${intdir}-sim_HDR_4rlks.int.hgt
 geocode.pl geomap_4rlks.trans filt_${intdir}-sim_HDR_4rlks.int.hgt geo_${intdir}.int
 
 ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"

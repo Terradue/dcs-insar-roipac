@@ -32,17 +32,16 @@ function getAUXref() {
   local rdf=$1
   local ods=$2
   ciop-log "INFO" "rdf is $rdf"
-  ciop-log "INFO" "ods is $ods" 
-  startdate="`ciop-casmeta -f "ical:dtstart" $rdf | tr -d "Z"`"
-  stopdate="`ciop-casmeta -f "ical:dtend" $rdf | tr -d "Z"`"
+  ciop-log "INFO" "ods is $ods"
+  startdate=`opensearch-client $rdf startdate | tr -d "Z"`
+  [ -z "$startdate" ] && exit $ERR_NOSTARTDATE
+  stopdate=`opensearch-client $rdf enddate | tr -d "Z"`
+  [ -z "$stopdate" ] && exit $ERR_NOSTOPDATE
   ciop-log "INFO" "startdate is $startdate"
   ciop-log "INFO" "stopdate is $stopdate"
   ciop-log "INFO" "opensearch-client -f Rdf -p time:start=$startdate -p time:end=$stopdate $ods"
-
   opensearch-client -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods
 }
-
-
 
 while read input
 do
