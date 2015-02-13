@@ -35,21 +35,21 @@
       </defaultJobconf>
     </jobTemplate>
   </jobTemplates>
-  <workflow id="roi_pac" title="ROI_PAC on a sandbox" abstract="This application invokes ROI_PAC on Envisat ASAR data">
+  <workflow id="roi_pac" title="Repeat Orbit Interferometry Package (ROI_PAC)" abstract="Data processing software allowing researchers in the area of topography and surface displacements studies to apply Interferometric Synthetic Aperture Radar (InSAR) methods.">
     <workflowVersion>1.0</workflowVersion>
     <node id="node_aux">
       <job id="aux" />
       <sources>
-        <source scope="runtime" id="Level0_ref" title="ASAR Master product catalogue entry" abstract="Define the Master ASAR product. The product is passed by references to catalogue entries " refid="string:list">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf</source>
+        <source scope="runtime" id="Level0_ref" title="ASAR Master product catalogue entry" abstract="Define the Master ASAR product. The product is passed by references to catalogue entries " refid="string:list">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf</source>
       </sources>
       <parameters>
-      	<parameter id="slave" scope="runtime">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf</parameter>
+      	<parameter id="slave" scope="runtime">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf</parameter>
       </parameters>
     </node>
     <node id="node_dem">
       <job id="dem" />
       <sources>
-        <source id="Level0_ref" title="ASAR master product catalogue entry in RDF format" abstract="ASAR slave product passed by reference to catalogue entries in RDF format" refid="string:list" scope="runtime">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100328_175019_000000162088_00084_42222_9504.N1/rdf</source>
+        <source id="Level0_ref" title="ASAR master product catalogue entry in RDF format" abstract="ASAR slave product passed by reference to catalogue entries in RDF format" refid="string:list" scope="runtime">http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20100502_175016_000000172089_00084_42723_0354.N1/rdf</source>
       </sources>
       <parameters />
     </node>
