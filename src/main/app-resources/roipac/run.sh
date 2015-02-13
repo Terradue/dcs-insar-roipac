@@ -104,7 +104,6 @@ do
     sar_url=`echo $input | sed "s/^sar=//"`
 
     # get the date in format YYMMDD
-    #sar_date=`ciop-casmeta -f "ical:dtstart" $sar_url | cut -c 3-10 | tr -d "-"`
     sar_date=`opensearch-client $sar_url startdate | cut -c 3-10 | tr -d "-"`
     sar_date_short=`echo $sar_date | cut -c 1-4`
   
@@ -112,7 +111,6 @@ do
     ciop-log "INFO" "SAR date: $sar_date and $sar_date_short"
 
     # get the dataset identifier
-#    sar_identifier=`ciop-casmeta -f "dc:identifier" $sar_url`
     sar_identifier=`opensearch-client $sar_url identifier`
     ciop-log "INFO" "SAR identifier: $sar_identifier"
 
@@ -240,6 +238,6 @@ ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int.rsc
 
 
-#rm -fr $UUIDTMP
+rm -fr $UUIDTMP
 
 ciop-log "INFO" "That's all folks"

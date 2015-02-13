@@ -68,7 +68,7 @@ function runAux() {
 	[ "$ref" != "" ] && echo "vor=$ref" | ciop-publish -s || exit $ERR_VOR
 		
 	# pass the SAR reference to the next node
-	echo "sar=$input" | ciop-publish -s	
+	echo "sar=$input" | ciop-publish -s
 }
 
 #main
@@ -82,6 +82,6 @@ do
 	[ "$resMaster" -ne 0 ] && exit $resMaster
 	runAux $slave
 	resSlave=$?
-	[ "$resSlave" -ne 0] && exit $resSlave
+	exit $resSlave
 done
 
