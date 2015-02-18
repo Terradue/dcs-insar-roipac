@@ -78,16 +78,6 @@ ciop-log "DEBUG" "dem wps results is ${wps_result}"
 
 # extract the result URL
 curl -L -o $TMPDIR/workdir/dem/dem.tgz "${wps_result}" 2> /dev/null
-#curl -L -s $dem_wps_result_xml | xsltproc /application/roipac/xslt/getresult.xsl - | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
-#wps_result=`ciop-copy $dem_wps_result_xml`
-
-# workaround for spurious bytes in the response 
-#tgz_metalink=`cat $wps_result | xsltproc /application/roipac/xslt/getresult.xsl -`
-
-#curl -L -s $tgz_metalink | xsltproc /application/roipac/xslt/metalink.xsl - | grep http | xargs -i curl -L -s {} -o $TMPDIR/workdir/dem/dem.tgz
-
-#mkdir $TMPDIR/workdir/dem/
-
 tar xzf $TMPDIR/workdir/dem/dem.tgz -C $TMPDIR/workdir/dem/ 
 
 dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
@@ -99,8 +89,6 @@ roipac_proc=$TMPDIR/workdir/roi_pac.proc
 
 for input in `cat $TMPDIR/input | grep 'sar='`
 do
-    #sar_url=`echo $input | cut -d "=" -f 2`
-
     sar_url=`echo $input | sed "s/^sar=//"`
 
     # get the date in format YYMMDD
