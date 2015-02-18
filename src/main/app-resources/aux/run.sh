@@ -28,25 +28,24 @@ trap cleanExit EXIT
 # get the catalogue access point
 cat_osd_root="`ciop-getparam aux_catalogue`"
 
+
 function getAUXref() {
   local rdf=$1
   local ods=$2
   ciop-log "INFO" "rdf is $rdf"
-  ciop-log "INFO" "ods is $ods" 
-  startdate="`ciop-casmeta -f "ical:dtstart" $rdf | tr -d "Z"`"
-  stopdate="`ciop-casmeta -f "ical:dtend" $rdf | tr -d "Z"`"
+  ciop-log "INFO" "ods is $ods"
+  startdate=`opensearch-client $rdf startdate | tr -d "Z"`
+  [ -z "$startdate" ] && exit $ERR_NOSTARTDATE
+  stopdate=`opensearch-client $rdf enddate | tr -d "Z"`
+  [ -z "$stopdate" ] && exit $ERR_NOSTOPDATE
   ciop-log "INFO" "startdate is $startdate"
   ciop-log "INFO" "stopdate is $stopdate"
   ciop-log "INFO" "opensearch-client -f Rdf -p time:start=$startdate -p time:end=$stopdate $ods"
-
   opensearch-client -f Rdf -p "time:start=$startdate" -p "time:end=$stopdate" $ods
 }
 
-
-
-while read input
-do
-	ciop-log "INFO" "dealing with $input"
+function runAux() {
+	input=$1
 	
 	for aux in ASA_CON_AX ASA_INS_AX ASA_XCA_AX ASA_XCH_AX
 	do
@@ -70,4 +69,19 @@ do
 		
 	# pass the SAR reference to the next node
 	echo "sar=$input" | ciop-publish -s
+}
+
+#main
+while read master
+do
+	ciop-log "INFO" "Master: $master"
+	slave="`ciop-getparam slave`"
+	ciop-log "INFO" "Slave: $slave"
+	runAux $master
+	resMaster=$?
+	[ "$resMaster" -ne 0 ] && exit $resMaster
+	runAux $slave
+	resSlave=$?
+	exit $resSlave
 done
+
