@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 # source the ciop functions (e.g. ciop-log)
 source ${ciop_job_include}
 
@@ -32,7 +32,7 @@ function cleanExit ()
 
 trap cleanExit EXIT
 
-# create a shorter TMPDIR name for some ROI_PAC scripts/binaires 
+# create a shorter TMPDIR name for some ROI_PAC scripts/binaires
 UUIDTMP="/tmp/`uuidgen`"
 #ln -s $TMPDIR $UUIDTMP
 mkdir ${UUIDTMP}
@@ -53,7 +53,7 @@ cat > $TMPDIR/input
 
 # retrieve the aux files
 mkdir -p $TMPDIR/aux
-for input in `cat $TMPDIR/input | grep 'aux='` 
+for input in `cat $TMPDIR/input | grep 'aux='`
 do
     ciop-log "DEBUG" "retrieving aux file ${input#aux=}"
     echo ${input#aux=} | ciop-copy -O $TMPDIR/aux - 2> /dev/null
@@ -62,7 +62,7 @@ done
 
 # retrieve the orbit data
 mkdir -p $TMPDIR/vor
-for input in `cat $TMPDIR/input | grep 'vor='` 
+for input in `cat $TMPDIR/input | grep 'vor='`
 do
     ciop-log "DEBUG" "retrieving orbit file ${input#aux=}"
     echo ${input#vor=} | ciop-copy -O $TMPDIR/vor - 2> /dev/null
@@ -78,7 +78,7 @@ ciop-log "DEBUG" "dem wps results is ${wps_result}"
 
 # extract the result URL
 curl -L -o $TMPDIR/workdir/dem/dem.tgz "${wps_result}" 2> /dev/null
-tar xzf $TMPDIR/workdir/dem/dem.tgz -C $TMPDIR/workdir/dem/ 
+tar xzf $TMPDIR/workdir/dem/dem.tgz -C $TMPDIR/workdir/dem/
 
 dem="`find $TMPDIR/workdir/dem -name "*.dem"`"
 
@@ -94,7 +94,7 @@ do
     # get the date in format YYMMDD
     sar_date=`opensearch-client $sar_url startdate | cut -c 3-10 | tr -d "-"`
     sar_date_short=`echo $sar_date | cut -c 1-4`
-  
+
     ciop-log "DEBUG" "SAR input ${sar_url}"
     ciop-log "INFO" "SAR date: $sar_date and $sar_date_short"
 
@@ -104,7 +104,7 @@ do
 
     sar_folder=$TMPDIR/workdir/$sar_date
     mkdir -p $sar_folder
-  
+
     # get ASAR products
     sar_url=`opensearch-client $sar_url enclosure`
     sar="`ciop-copy -o $sar_folder $sar_url`"
@@ -126,7 +126,7 @@ do
         base=${sar1}_${sar2}
         geodir=${geodir}-${sar_date_short}
     fi
-done 
+done
 
 ciop-log "INFO" "Conversion of SAR pair to RAW completed"
 
@@ -177,7 +177,10 @@ process_2pass.pl $roipac_proc 1>&2
 cd int_${intdir}
 
 ciop-log "INFO" "Geocoding the wrapped interferogram"
-cpx2rmg  filt_${intdir}-sim_HDR_4rlks.int  filt_${intdir}-sim_HDR_4rlks.int.hgt
+h=$(cat filt_${intdir}-sim_HDR_4rlks.int | grep FILE_LENGTH | tr -s " " | cut -d " " -f 2)
+w=$(cat filt_${intdir}-sim_HDR_4rlks.int | grep WIDTH | tr -s " " | cut -d " " -f 2)
+cpx2rmg  filt_${intdir}-sim_HDR_4rlks.int  filt_${intdir}-sim_HDR_4rlks.int.hgt ${w} ${h}
+cp filt_${intdir}-sim_HDR_4rlks.int.rsc filt_${intdir}-sim_HDR_4rlks.int.hgt.rsc
 geocode.pl geomap_4rlks.trans filt_${intdir}-sim_HDR_4rlks.int.hgt geo_${intdir}.int
 
 ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"
