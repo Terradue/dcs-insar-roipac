@@ -177,8 +177,8 @@ process_2pass.pl $roipac_proc 1>&2
 cd int_${intdir}
 
 ciop-log "INFO" "Geocoding the wrapped interferogram"
-h=$(cat filt_${intdir}-sim_HDR_4rlks.int | grep FILE_LENGTH | tr -s " " | cut -d " " -f 2)
-w=$(cat filt_${intdir}-sim_HDR_4rlks.int | grep WIDTH | tr -s " " | cut -d " " -f 2)
+h=$(cat filt_${intdir}-sim_HDR_4rlks.int.rsc | grep FILE_LENGTH | tr -s " " | cut -d " " -f 2)
+w=$(cat filt_${intdir}-sim_HDR_4rlks.int.rsc | grep WIDTH | tr -s " " | cut -d " " -f 2)
 cpx2rmg  filt_${intdir}-sim_HDR_4rlks.int  filt_${intdir}-sim_HDR_4rlks.int.hgt ${w} ${h}
 cp filt_${intdir}-sim_HDR_4rlks.int.rsc filt_${intdir}-sim_HDR_4rlks.int.hgt.rsc
 geocode.pl geomap_4rlks.trans filt_${intdir}-sim_HDR_4rlks.int.hgt geo_${intdir}.int
@@ -190,6 +190,16 @@ ciop-log "INFO" "Creating geotif files for interferogram phase and magnitude"
 gdal_translate NETCDF:"geo_${intdir}.int.nc":phase geo_${intdir}.int.phase.tif
 gdal_translate NETCDF:"geo_${intdir}.int.nc":magnitude geo_${intdir}.int.magnitude.tif
 gdal_translate NETCDF:"geo_${intdir}.unw.nc":phase geo_${intdir}.unw.phase.tif
+
+# create quicklooks
+# rescale
+gdal_translate -scale -10 10 0 255 -ot Byte -of GTiff  geo_${intdir}.unw.phase.tif geo_${intdir}.unw.phase.temp.tif
+gdal_translate -scale -10 10 0 255 -ot Byte -of PNG  geo_${intdir}.unw.phase.tif geo_${intdir}.unw.phase.png
+listgeo -tfw geo_${intdir}.unw.phase.tif
+mv geo_${intdir}.unw.phase.tfw geo_${intdir}.unw.phase.pngw
+
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.unw.phase.png
+ciop-publish -m $TMPDIR/workdir/int_${intdir}/geo_${intdir}.unw.phase.pngw
 
 ciop-log "INFO" "Publishing results"
 ciop-publish -m $TMPDIR/workdir/*.proc
@@ -229,6 +239,6 @@ ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int
 ciop-publish -m $TMPDIR/workdir/int_${intdir}/$intdir.int.rsc
 
 
-rm -fr $UUIDTMP
+#rm -fr $UUIDTMP
 
 ciop-log "INFO" "That's all folks"
