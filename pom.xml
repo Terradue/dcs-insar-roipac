@@ -7,7 +7,7 @@
 	<packaging>rpm</packaging>
 	<name>InSAR-ROI_PAC</name>
 	<description>InSAR-ROI_PAC</description>
-	<version>1.5.1</version>
+	<version>1.5.1-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:Terradue/InSAR-ROI_PAC.git</connection>
