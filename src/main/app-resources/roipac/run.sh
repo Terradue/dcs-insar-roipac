@@ -71,9 +71,8 @@ done
 
 # retrieve the DEM
 mkdir -p $TMPDIR/workdir/dem
-wps_result="$( ciop-browseresults -r ${CIOP_WF_RUN_ID} -j node_dem -w | tr -d '\r' | tr '\n' ';')"
-ciop-log "DEBUG" "dem wps results 1 is ${wps_result}"
-wps_result=`echo $wps_result | cut -d ";" -f 1`
+demRes="$( cat $TMPDIR/input | grep 'node_dem')" 
+wps_result="$( ciop-browseresults -R $demRes | tr -d '\r')" #just a parser of result.xml and metalink
 ciop-log "DEBUG" "dem wps results is ${wps_result}"
 
 # extract the result URL
