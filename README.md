@@ -53,7 +53,7 @@ Log on the developer sandbox and run these commands in a shell:
 
 ```bash
 cd
-git clone git@github.com:geohazards-tep/InSAR-ROI_PAC.git
+git clone https://github.com/Terradue/InSAR-ROI_PAC.git
 cd InSAR-ROI_PAC
 git checkout develop
 mvn install
